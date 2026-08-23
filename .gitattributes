@@ -1,0 +1,2 @@
+# Evidence hashes are byte-exact: every checkout must produce identical files.
+* text=auto eol=lf
