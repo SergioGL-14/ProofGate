@@ -14,7 +14,10 @@ Phase 1 completed on 2026-08-23 after three real-repository trials. Phase 2 also
 completed on 2026-08-23: ten reproducible fixtures compared the base agent with
 ProofGate. Final results were 9/10 for base and 10/10 for ProofGate, with zero
 critical false `PASS` verdicts from ProofGate. See
-[`evals/phase-2-report.md`](evals/phase-2-report.md). ProofGate is not installed
+[`evals/phase-2-report.md`](evals/phase-2-report.md). Phase 3 applied the full
+cycle to an unseen real repository: it found and fixed a latent defect in
+`scrapy/queuelib` with red-first regression tests across six backends
+([PG-R04](evals/runs/PG-R04-queuelib-report.md)). ProofGate is not installed
 globally.
 
 ## Engineering Doctrine
@@ -70,6 +73,9 @@ or unexecuted required gate cannot be reported as passed.
 
 ```text
 skills/proofgate/SKILL.md  Portable agent contract
+templates/                 Contract and report skeletons
+evals/                     Evaluation protocol, fixtures, and run evidence
+tests/                     Repository contract tests
 ```
 
 ## Use

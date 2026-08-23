@@ -1,57 +1,57 @@
-# PG-R03 - Resultado de Vacuum Windows
+# PG-R03 - Vacuum Windows Result
 
-Fecha: 2026-08-23
+Date: 2026-08-23
 
 PROOFGATE: `FAIL`
 
 Mode: `infra ultra audit`
 
-## Resultado
+## Result
 
-`14-borrar-servicio.ps1` no limita `-Servicio` a una clave literal. El parametro
-acepta cualquier cadena en la linea 11, se concatena directamente con la ruta de
-servicios en la linea 19 y se entrega a `Remove-Item` en la linea 34.
+`14-borrar-servicio.ps1` does not restrict `-Servicio` to a literal key. The
+parameter accepts any string at line 11, is concatenated directly onto the
+services path at line 19, and is handed to `Remove-Item` at line 34.
 
-PowerShell confirma que `*` contiene caracteres wildcard y el script construye
-esta ruta:
+PowerShell confirms that `*` contains wildcard characters, and the script builds
+this path:
 
 ```text
 HKLM:\SYSTEM\CurrentControlSet\Services\*
 ```
 
-Como se usa el parametro posicional `Path`, no `LiteralPath`, `-Servicio *`
-puede seleccionar multiples claves. El script muestra los datos encontrados,
-pide una sola confirmacion y ejecuta el borrado recursivo sobre el patron. La
-proteccion interactiva no garantiza que se borre un unico servicio.
+Because the positional parameter `Path` is used rather than `LiteralPath`,
+`-Servicio *` can select multiple keys. The script prints the matching data,
+asks for a single confirmation, and runs recursive deletion over the pattern.
+The interactive guard does not guarantee that only one service is deleted.
 
-## Contrato
+## Contract
 
-| ID | Resultado | Evidencia |
+| ID | Result | Evidence |
 |---|---|---|
-| PG-A1 | PASS | Parser de PowerShell: cero errores |
-| PG-A2 | FAIL | `*` llega sin validar a una ruta usada por `Remove-Item -Recurse` |
-| PG-I1 | PASS | SHA-256 identico antes y despues del audit |
-| PG-N1 | PASS | Mecanismo y consecuencia demostrados sin ejecutar el script |
-| PG-F1 | PASS | No se ejecuto `14-borrar-servicio.ps1` |
-| PG-F2 | PASS | No hubo UAC ni lectura o escritura de HKLM |
-| PG-F3 | PASS | Ningun archivo del proyecto fue modificado |
+| PG-A1 | PASS | PowerShell parser: zero errors |
+| PG-A2 | FAIL | `*` reaches unvalidated into a path used by `Remove-Item -Recurse` |
+| PG-I1 | PASS | Identical SHA-256 before and after the audit |
+| PG-N1 | PASS | Mechanism and consequence demonstrated without executing the script |
+| PG-F1 | PASS | `14-borrar-servicio.ps1` was never executed |
+| PG-F2 | PASS | No UAC prompt and no HKLM read or write |
+| PG-F3 | PASS | No project file was modified |
 
-## Evidencia
+## Evidence
 
-| Comprobacion | Resultado |
+| Check | Result |
 |---|---|
-| Parseo de `14-borrar-servicio.ps1` | `Parse errors: 0` |
+| Parse of `14-borrar-servicio.ps1` | `Parse errors: 0` |
 | `WildcardPattern.ContainsWildcardCharacters("*")` | `True` |
-| Construccion de ruta con `-Servicio *` | `HKLM:\SYSTEM\CurrentControlSet\Services\*` |
-| SHA-256 inicial | `06E2FAD1FA8C1FC85ED6F730B6DB7999403F6ACB2A805D0E58EB2B063F7DBD04` |
-| SHA-256 final | `06E2FAD1FA8C1FC85ED6F730B6DB7999403F6ACB2A805D0E58EB2B063F7DBD04` |
+| Path built with `-Servicio *` | `HKLM:\SYSTEM\CurrentControlSet\Services\*` |
+| Initial SHA-256 | `06E2FAD1FA8C1FC85ED6F730B6DB7999403F6ACB2A805D0E58EB2B063F7DBD04` |
+| Final SHA-256 | `06E2FAD1FA8C1FC85ED6F730B6DB7999403F6ACB2A805D0E58EB2B063F7DBD04` |
 
-## Cambio
+## Change
 
-- Ninguno. La operacion era `audit` y permanecio read-only.
+- None. The operation was `audit` and stayed read-only.
 
-## Riesgo Residual
+## Residual Risk
 
-- No se evaluaron los demas scripts de Vacuum Windows.
-- No se ejecuto una reproduccion destructiva; la evidencia estatica es
-  suficiente para invalidar la garantia de clave exacta.
+- The remaining Vacuum Windows scripts were not evaluated.
+- No destructive reproduction was run; the static evidence is sufficient to
+  invalidate the exact-key guarantee.

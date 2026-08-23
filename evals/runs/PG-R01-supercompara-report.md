@@ -1,98 +1,94 @@
-# PG-R01 - Resultado de SuperCompara
+# PG-R01 - SuperCompara Result
 
-Fecha: 2026-08-23
+Date: 2026-08-23
 
 PROOFGATE: `FAIL`
 
 Mode: `full build`
 
-## Resultado
+## Result
 
-El fallo encontrado y la correccion quedan demostrados, pero el ensayo completo
-no cumple PG-A2: el contrato exige literalmente que la copia no contenga
-`.git` y el laboratorio se inicializo como repositorio antes de BUILD. No se
-ha reinterpretado ni modificado el contrato despues de construir para obtener
-un resultado favorable.
+The failure and its fix are demonstrated, but the trial fails PG-A2 overall:
+the contract requires, literally, that the copy contain no `.git`, and the lab
+was initialized as a repository before BUILD. The contract was not reinterpreted
+or modified after the build to reach a favorable outcome.
 
-La copia no tiene remoto ni commits. Las caches generadas al ejecutar pytest se
-eliminaron al terminar. Tampoco contiene archivos `.pyc`, logs de ejecucion ni
-bases SQLite del usuario.
+The copy has no remote and no commits. pytest caches generated during the runs
+were removed afterwards. It also contains no `.pyc` files, run logs, or user
+SQLite databases.
 
-## Contrato
+## Contract
 
-| ID | Resultado | Evidencia |
+| ID | Result | Evidence |
 |---|---|---|
-| PG-A1 | PASS | La copia conserva aplicacion, tests y documentacion; la suite completa se ejecuta |
-| PG-A2 | FAIL | No hay caches, logs de ejecucion ni SQLite, pero existe un `.git` nuevo |
-| PG-A3 | PASS | Baseline anterior al cambio: 132 tests pasan y pyflakes no informa errores |
-| PG-A4 | PASS | La regresion fallo antes del arreglo y los 133 tests pasan despues |
-| PG-I1 | PASS | `git status --short` en el proyecto original no produce salida tras el cambio |
-| PG-I2 | PASS | Solo cambian el optimizador y su test; suite completa y revision independiente sin hallazgos finales |
-| PG-N1 | PASS | No se imprimieron ni publicaron secretos |
-| PG-N2 | PASS | Este informe describe comandos, hallazgos y limites concretos del ensayo |
-| PG-F1 | PASS | No hubo red, despliegue ni instalacion global |
-| PG-F2 | PASS | La clave Algolia publica de solo lectura no se trato como incidente ni se reprodujo |
-| PG-F3 | PASS | No se borro, salto ni rebajo ninguna prueba; la suite pasa de 132 a 133 casos |
+| PG-A1 | PASS | The copy retains application, tests, and documentation; the full suite runs |
+| PG-A2 | FAIL | No caches, run logs, or SQLite, but a new `.git` exists |
+| PG-A3 | PASS | Baseline before the change: 132 tests pass and pyflakes reports no errors |
+| PG-A4 | PASS | The regression failed before the fix and all 133 tests pass after |
+| PG-I1 | PASS | `git status --short` on the original project produces no output after the change |
+| PG-I2 | PASS | Only the optimizer and its test change; full suite and independent review with no final findings |
+| PG-N1 | PASS | No secrets were printed or published |
+| PG-N2 | PASS | This report states the commands, findings, and concrete limits of the trial |
+| PG-F1 | PASS | No network, deployment, or global installation |
+| PG-F2 | PASS | The public read-only Algolia key was neither treated as an incident nor reproduced |
+| PG-F3 | PASS | No test was deleted, skipped, or weakened; the suite goes from 132 to 133 cases |
 
-## Hallazgo Corregido
+## Fixed Finding
 
-Un articulo fijado por el usuario a un supermercado sin precio compatible se
-sustituia silenciosamente por una oferta de otra tienda. La linea seguia
-representando una eleccion fijada, por lo que el resultado contradecia la accion
-del usuario.
+An item pinned by the user to a supermarket with no compatible price was
+silently replaced by an offer from another store. The line still represented a
+pinned choice, so the result contradicted the user's action.
 
-El primer arreglo retiro ese fallback en `_best_line`. La revision adversarial
-demostro que era incompleto: la linea quedaba sin cubrir, pero la comparativa de
-lista completa todavia podia recomendar la tienda alternativa y calcular un
-ahorro falso.
+The first fix removed that fallback in `_best_line`. Adversarial review showed
+it was incomplete: the line was left uncovered, but the full-list comparison
+could still recommend the alternative store and compute a false saving.
 
-La correccion final aplica el pin en `ShoppingOptimizer._candidates`, que es la
-ruta compartida por el reparto y los totales de cada supermercado. Si la tienda
-fijada no tiene una oferta compatible, la linea queda sin cubrir y ninguna otra
-tienda puede presentarla como disponible.
+The final fix applies the pin in `ShoppingOptimizer._candidates`, the path
+shared by allocation and per-supermarket totals. If the pinned store has no
+compatible offer, the line stays uncovered and no other store can present it as
+available.
 
-Archivos modificados en la copia:
+Files modified in the copy:
 
 - `supercompara/domain/optimizer.py`
 - `tests/test_optimizer.py`
 
-## Evidencia Ejecutada
+## Executed Evidence
 
-| Paso | Comando | Resultado |
+| Step | Command | Result |
 |---|---|---|
-| Baseline de la copia | `python -m pytest` | PASS: 132 tests |
-| Lint del baseline | `python -m pyflakes supercompara main.py install.py tests` | PASS: sin salida |
-| Reproduccion inicial | `python -m pytest tests/test_optimizer.py::test_una_tienda_fijada_sin_precio_no_se_sustituye -q -p no:cacheprovider` | FAIL: la linea usaba DIA |
-| Adversario del arreglo parcial | mismo test con aserciones de totales | FAIL: DIA aparecia como mejor supermercado completo |
-| Regresion final | `PYTHONDONTWRITEBYTECODE=1 python -m pytest tests/test_optimizer.py::test_una_tienda_fijada_sin_precio_no_se_sustituye -q -p no:cacheprovider` | PASS |
-| Suite final | `PYTHONDONTWRITEBYTECODE=1 python -m pytest -p no:cacheprovider` | PASS: 133 tests |
-| Lint final | `python -m pyflakes supercompara main.py install.py tests` | PASS: sin salida |
-| Original intacto | `git status --short` | PASS: sin salida |
-| Remotos del laboratorio | `git remote -v` | PASS: sin salida |
-| Revision independiente | revision del diff y la regresion | PASS: sin hallazgos finales |
+| Copy baseline | `python -m pytest` | PASS: 132 tests |
+| Baseline lint | `python -m pyflakes supercompara main.py install.py tests` | PASS: no output |
+| Initial reproduction | `python -m pytest tests/test_optimizer.py::test_una_tienda_fijada_sin_precio_no_se_sustituye -q -p no:cacheprovider` | FAIL: the line used DIA |
+| Adversarial check of the partial fix | same test with totals assertions | FAIL: DIA appeared as best supermarket for the complete list |
+| Final regression | `PYTHONDONTWRITEBYTECODE=1 python -m pytest tests/test_optimizer.py::test_una_tienda_fijada_sin_precio_no_se_sustituye -q -p no:cacheprovider` | PASS |
+| Final suite | `PYTHONDONTWRITEBYTECODE=1 python -m pytest -p no:cacheprovider` | PASS: 133 tests |
+| Final lint | `python -m pyflakes supercompara main.py install.py tests` | PASS: no output |
+| Original intact | `git status --short` | PASS: no output |
+| Lab remotes | `git remote -v` | PASS: no output |
+| Independent review | review of the diff and the regression | PASS: no final findings |
 
-## Comparacion De Auditorias
+## Audit Comparison
 
-La auditoria base y ProofGate detectaron el mismo defecto del pin. La auditoria
-base tambien encontro dos fallos independientes: el ciclo de vida del `QThread`
-en una segunda busqueda y la escritura parcial de `save_offers()`.
+The baseline audit and ProofGate found the same pin defect. The baseline audit
+also found two independent failures: the `QThread` lifecycle on a second search
+and partial writes in `save_offers()`.
 
-ProofGate no intento corregir los tres a la vez. Eligio un fallo reproducible,
-exigio una prueba roja, limito el cambio a la regla de dominio y sometio el
-primer arreglo a una revision adversarial. Esa revision encontro una segunda
-ruta afectada que la prueba inicial no cubria y obligo a mover la regla al punto
-compartido.
+ProofGate did not attempt to fix all three at once. It picked one reproducible
+failure, demanded a red test, kept the change inside the domain rule, and put
+the first fix through adversarial review. That review found a second affected
+path the initial test did not cover and forced the rule into the shared point.
 
-El ensayo tambien descubrio un defecto en su propio contrato: PG-A2 mezcla la
-prohibicion de copiar el historial original con la ausencia absoluta de un
-repositorio nuevo. La redaccion debe separarse en futuros ensayos, pero PG-R01
-permanece sin cambios porque BUILD ya habia comenzado.
+The trial also exposed a defect in its own contract: PG-A2 mixes the ban on
+copying the original history with the absolute absence of a new repository.
+Future trials should separate the wording, but PG-R01 stands as executed
+because BUILD had already started.
 
-## Riesgo Residual
+## Residual Risk
 
-- No hay prueba explicita para una oferta incompatible en la tienda fijada y
-  otra compatible fuera de ella, aunque ambas pasan por el filtro corregido.
-- No hay prueba especifica para listas con varios articulos fijados a tiendas
-  distintas.
-- Los defectos de `QThread` y atomicidad de `save_offers()` quedan fuera del
-  alcance de PG-R01 y siguen pendientes en la copia.
+- There is no explicit test for an incompatible offer at the pinned store with
+  a compatible one elsewhere, though both go through the corrected filter.
+- There is no specific test for lists with several items pinned to different
+  stores.
+- The `QThread` defect and `save_offers()` atomicity fall outside PG-R01 scope
+  and remain open in the copy.

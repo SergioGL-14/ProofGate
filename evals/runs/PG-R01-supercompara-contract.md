@@ -1,16 +1,16 @@
 # PG-R01 — SuperCompara
 
-Fecha: 2026-08-23
+Date: 2026-08-23
 
 Intensity: `full`
 Profile: `standard`
 Operation: `build`
 
-## Objetivo
+## Objective
 
-Probar ProofGate sobre una copia real de SuperCompara sin tocar el proyecto de
-origen. La prueba debe encontrar un defecto demostrable o terminar bloqueada;
-no vale fabricar trabajo para justificar el ensayo.
+Run ProofGate against a real copy of SuperCompara without touching the source
+project. The trial must find a demonstrable defect or end blocked; inventing
+work to justify the trial is not acceptable.
 
 ## SCAN
 
@@ -22,48 +22,48 @@ project:
   gates:
     - python -m pytest
     - python -m pyflakes supercompara main.py install.py tests
-source: C:\Users\Galvik\Documents\Projects\Developer\SuperCompara
-workspace: C:\Users\Galvik\Documents\Projects\GitHub\SuperCompara-ProofGate
+source: private local repository SuperCompara
+workspace: disposable local working copy of SuperCompara
 risk:
   intensity: full
   profile: standard
   reasons:
-    - copia de un proyecto real
-    - conectores HTTP externos
-    - base SQLite local
+    - copy of a real project
+    - external HTTP connectors
+    - local SQLite database
 ```
 
-## Contrato
+## Contract
 
-| ID | Condición | Required |
+| ID | Condition | Required |
 |---|---|---|
-| PG-A1 | La copia conserva código, tests y documentación necesarios | Yes |
-| PG-A2 | La copia no contiene `.git`, cachés, logs ni la base SQLite del usuario | Yes |
-| PG-A3 | La suite y pyflakes pasan antes de modificar la copia | Yes |
-| PG-A4 | Cualquier cambio corrige un fallo reproducible y deja una regresión ejecutable | Yes |
-| PG-I1 | El proyecto original queda limpio y sin cambios | Yes |
-| PG-I2 | La arquitectura y el comportamiento ajeno al defecto se conservan | Yes |
-| PG-N1 | No se imprimen ni publican secretos | Yes |
-| PG-N2 | La documentación añadida es directa, concreta y escrita para este proyecto | Yes |
-| PG-F1 | No se toca la red, no se despliega y no se instala nada globalmente | Yes |
-| PG-F2 | No se convierte una credencial pública de solo lectura en un falso incidente | Yes |
-| PG-F3 | No se rebajan, borran ni saltan pruebas para obtener verde | Yes |
+| PG-A1 | The copy retains the required code, tests, and documentation | Yes |
+| PG-A2 | The copy contains no `.git`, caches, logs, or user SQLite database | Yes |
+| PG-A3 | Suite and pyflakes pass before any change to the copy | Yes |
+| PG-A4 | Any change fixes a reproducible failure and leaves a runnable regression test | Yes |
+| PG-I1 | The original project remains clean and unchanged | Yes |
+| PG-I2 | Architecture and behavior outside the defect are preserved | Yes |
+| PG-N1 | No secrets are printed or published | Yes |
+| PG-N2 | Added documentation is direct, concrete, and written for this project | Yes |
+| PG-F1 | No network access, no deployment, nothing installed globally | Yes |
+| PG-F2 | A public read-only credential is not turned into a false incident | Yes |
+| PG-F3 | No tests are weakened, deleted, or skipped to get green | Yes |
 
-## Riesgos y evidencia
+## Risks And Evidence
 
-| ID | Riesgo | Evidencia |
+| ID | Risk | Evidence |
 |---|---|---|
-| PG-A1/PG-A2 | Copia incompleta o con datos runtime | Inventario y búsqueda de artefactos en destino |
-| PG-A3 | Baseline ya roto | Ejecución exacta de pytest y pyflakes en origen y copia |
-| PG-A4 | Hallazgo especulativo | Reproducción roja antes del arreglo y verde después |
-| PG-I1 | Modificación accidental del original | `git status --short` antes y después |
-| PG-I2 | Refactor ajeno | Revisión del diff y suite completa |
-| PG-N1/PG-F2 | Clasificación incorrecta de la clave Algolia pública | Contrato y uso del conector; no reproducir su valor en informes |
-| PG-N2 | Texto genérico | Revisión manual de README e informe del ensayo |
-| PG-F1/PG-F3 | Efecto externo o manipulación | Sin comandos de red/despliegue; inspección del diff |
+| PG-A1/PG-A2 | Incomplete copy or leftover runtime data | Inventory and artifact search on the target |
+| PG-A3 | Baseline already broken | Exact pytest and pyflakes runs on origin and copy |
+| PG-A4 | Speculative finding | Red reproduction before the fix, green after |
+| PG-I1 | Accidental modification of the original | `git status --short` before and after |
+| PG-I2 | Unrelated refactor | Diff review and full suite |
+| PG-N1/PG-F2 | Misclassification of the public Algolia key | Contract and connector usage; do not reproduce its value in reports |
+| PG-N2 | Generic text | Manual review of README and trial report |
+| PG-F1/PG-F3 | External effect or tampering | No network/deployment commands; diff inspection |
 
-## Cierre
+## Closure
 
-El ensayo solo puede emitir `PASS` si todos los IDs requeridos tienen evidencia.
-Si no aparece un defecto real, termina `BLOCKED` para PG-A4 y se conserva ese
-resultado; no se inventa una modificación.
+The trial may emit `PASS` only if every required ID has evidence. If no real
+defect appears, it ends `BLOCKED` on PG-A4 and that outcome is preserved; no
+modification is invented.

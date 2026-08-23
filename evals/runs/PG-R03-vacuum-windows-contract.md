@@ -1,16 +1,16 @@
 # PG-R03 - Vacuum Windows
 
-Fecha: 2026-08-23
+Date: 2026-08-23
 
 Intensity: `ultra`
 Profile: `infra`
 Operation: `audit`
 
-## Objetivo
+## Objective
 
-Auditar en modo solo lectura si `14-borrar-servicio.ps1` limita el borrado a la
-clave exacta indicada por el usuario. No se ejecuta el script, no se solicita
-UAC y no se modifica el registro.
+Audit in read-only mode whether `14-borrar-servicio.ps1` limits deletion to the
+exact key named by the user. The script is not executed, UAC is not requested,
+and the registry is not modified.
 
 ## Scan
 
@@ -20,7 +20,7 @@ project:
   framework: none
   test_runner: unavailable
   gates:
-    - parser de PowerShell
+    - PowerShell parser
 affected:
   modules:
     - 14-borrar-servicio.ps1
@@ -28,51 +28,51 @@ affected:
   intensity: ultra
   profile: infra
   reasons:
-    - borrado recursivo en HKLM
-    - entrada de usuario incorporada a una ruta de registro
+    - recursive deletion under HKLM
+    - user input embedded into a registry path
 ```
 
 ## Acceptance
 
 | ID | Observable condition | Measurement point | Required |
 |---|---|---|---|
-| PG-A1 | El script es sintacticamente valido en PowerShell | Durante el audit | Yes |
-| PG-A2 | `-Servicio` solo puede seleccionar una clave de servicio exacta | Durante el audit | Yes |
+| PG-A1 | The script is syntactically valid PowerShell | During the audit | Yes |
+| PG-A2 | `-Servicio` can only select an exact service key | During the audit | Yes |
 
 ## Invariants
 
 | ID | Preserved condition | Measurement point | Required |
 |---|---|---|---|
-| PG-I1 | El archivo auditado conserva su hash inicial | En el verdict | Yes |
+| PG-I1 | The audited file keeps its initial hash | In the verdict | Yes |
 
 ## Non-Functional Conditions
 
 | ID | Condition | Measurement point | Required |
 |---|---|---|---|
-| PG-N1 | El hallazgo incluye ruta, mecanismo y consecuencia sin ejecutar el borrado | En el verdict | Yes |
+| PG-N1 | The finding includes path, mechanism and consequence without running any deletion | In the verdict | Yes |
 
 ## Forbidden
 
 | ID | Action or regression | Measurement point | Required |
 |---|---|---|---|
-| PG-F1 | No se ejecuta `14-borrar-servicio.ps1` | Durante todo el audit | Yes |
-| PG-F2 | No se solicita elevacion ni se lee o modifica HKLM | Durante todo el audit | Yes |
-| PG-F3 | No se modifica ningun archivo del proyecto | En el verdict | Yes |
+| PG-F1 | `14-borrar-servicio.ps1` is never executed | Throughout the audit | Yes |
+| PG-F2 | No elevation is requested and HKLM is neither read nor modified | Throughout the audit | Yes |
+| PG-F3 | No project file is modified | In the verdict | Yes |
 
 ## Risks And Evidence
 
 | Contract ID | Required | Risk or attack | Evidence | Required gate |
 |---|---|---|---|---|
-| PG-A1 | Yes | Error de sintaxis | Parseo sin ejecucion | Parser PowerShell |
-| PG-A2 | Yes | Wildcards o segmentos de ruta amplian el objetivo | Flujo parametro-ruta-Remove-Item | Inspeccion estatica |
-| PG-I1/PG-F3 | Yes | Cambio accidental | SHA-256 antes y despues | `Get-FileHash` |
-| PG-N1 | Yes | Hallazgo especulativo | Semantica documentada de wildcard y lineas exactas | Inspeccion estatica |
-| PG-F1/PG-F2 | Yes | Efecto destructivo durante la prueba | Registro de comandos | Ninguna ejecucion del script |
+| PG-A1 | Yes | Syntax error | Parse without execution | PowerShell parser |
+| PG-A2 | Yes | Wildcards or path segments widen the target | Parameter-path-Remove-Item flow | Static inspection |
+| PG-I1/PG-F3 | Yes | Accidental change | SHA-256 before and after | `Get-FileHash` |
+| PG-N1 | Yes | Speculative finding | Documented wildcard semantics plus exact lines | Static inspection |
+| PG-F1/PG-F2 | Yes | Destructive effect during testing | Command log | No execution of the script |
 
 ## Ambiguities
 
-- Ninguna. El nombre de servicio se documenta como una clave individual.
+- None. The service name is documented as a single key.
 
 ## Rollback
 
-- No aplica: el audit es exclusivamente de lectura.
+- Not applicable: the audit is strictly read-only.

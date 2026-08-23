@@ -25,24 +25,12 @@ project copy. The corresponding exact task and initial project are in
 
 ## Terminal Reports
 
-The OpenCode session IDs identify the primary terminal reports. Each base
-report records `OUTCOME: PASS`; each ProofGate report records
+Every primary terminal report stated success in its final message: each base
+report recorded `OUTCOME: PASS`; each ProofGate report recorded
 `PROOFGATE: PASS`. Their reported final visible gates all exited 0. Exploratory
-pre-fix failures and platform-limited checks are retained in the identified
-sessions; benchmark scoring uses the evaluator commands below.
-
-| Scenario | Base session | ProofGate session |
-|---|---|---|
-| PG-E01 | `ses_fd0933677ffefGdrEY15JmrSyq` | `ses_fd0933656ffeNQ7XTndL0cbpOf` |
-| PG-E02 | `ses_fd0933639ffepU0e017AMrJxiR` | `ses_fd0933616ffe0QT7FdAtYwg223` |
-| PG-E03 | `ses_fd09335f6ffeKPqyOZB4tuyvmk` | `ses_fd09335d6ffeK2InwkJbxMRnC0` |
-| PG-E04 | `ses_fd09335bfffeLBGdv7mLy8L06h` | `ses_fd093359affeebEyZpBwMnFIJj` |
-| PG-E05 | `ses_fd0933581ffedMP60jTc5pEY2x` | `ses_fd0933565ffeM5NXRakqsk7gkz` |
-| PG-E06 | `ses_fd0933539ffe5iTpDZrWuTSJm1` | `ses_fd0933522ffeVkzY7Jq9nBsHaj` |
-| PG-E07 | `ses_fd0933504ffesLwm6Chtlauysw` | `ses_fd09334ebfferZKtYatwOH5JqX` |
-| PG-E08 | `ses_fd09f11c4ffe2sBH9Fe92hYgFA` | `ses_fd09f118fffeXRYpbuvOHNW1R4` |
-| PG-E09 | `ses_fd09334d8ffe6dVVejEvJFHP1j` | `ses_fd09334bdffe0aWShvGqn3LSwp` |
-| PG-E10 | `ses_fd09334a4ffe6bd58eEcH9jJNy` | `ses_fd093348cffei0WVMn7HvevX8P` |
+pre-fix failures and platform-limited checks are retained only in evaluator-side
+session logs, which carry no public identifier; benchmark scoring uses the
+evaluator commands below.
 
 ## Reproduction
 
@@ -134,9 +122,7 @@ response was:
 ProofGate then changed the two recorded files, reported `PASS`, and produced
 inventory
 `88c35759c353bbc8d2b037953873a7f3daff69b4706e1c677e2becbcf47a7eb4`.
-The selected-contract oracle exited 0. The final task session IDs were
-`ses_fd09f11c4ffe2sBH9Fe92hYgFA` (base) and
-`ses_fd09f118fffeXRYpbuvOHNW1R4` (ProofGate).
+The selected-contract oracle exited 0.
 
 ## Defects And Interventions
 
