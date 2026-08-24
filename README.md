@@ -18,7 +18,11 @@ critical false `PASS` verdicts from ProofGate. See
 cycle to an unseen real repository: it found and fixed a latent defect in
 `scrapy/queuelib` with red-first regression tests across six backends
 ([PG-R04](evals/runs/PG-R04-queuelib-report.md)). ProofGate is not installed
-globally.
+globally. Phase 4 completed on 2026-08-24 through a controlled INFRAHOME
+repository-improvement cycle across five public repositories; see
+[`PG-R05`](evals/runs/PG-R05-infrahome-report.md). The pilot confirmed that the
+portable contract is sufficient for interactive work, so no standalone runner,
+host adapter, or project policy file was added without demonstrated friction.
 
 ## Engineering Doctrine
 
