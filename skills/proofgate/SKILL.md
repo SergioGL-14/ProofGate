@@ -20,10 +20,12 @@ Default to `full build` only for requests that explicitly ask to implement or
 fix. Map plan/design-only requests to `plan`, review/inspect/findings requests
 to `audit`, and check/validate-existing-work requests to `verify`. A combined
 "verify and fix" request is `build`: establish the failing or passing baseline,
-then enter BUILD only if a change is required. Pure `verify` is always
-read-only. Read-only intent always overrides the build default. A user may
-select an intensity and operation in a command or natural language. Keep that
-selection for the current session.
+then enter BUILD only if a change is required. Pure `verify` never edits tracked
+project content or fixes failures. Verification gates may create their ordinary
+ignored build artifacts; missing tool or dependency installation still requires
+explicit authorization. Read-only intent always overrides the build default. A
+user may select an intensity and operation in a command or natural language.
+Keep that selection for the current session.
 
 The ordered intensities are `lite < full < ultra`. `infra` is an operational
 profile, not a higher point on that scale: combine it with the required
@@ -47,7 +49,7 @@ Operation:
 |---|---|
 | `plan` | No; produce contract and evidence design |
 | `build` | Yes, within the authorized workspace and contract |
-| `verify` | No; a request that includes fixes uses `build` |
+| `verify` | No project edits; ordinary ignored gate artifacts are allowed |
 | `audit` | No; report weaknesses and missing evidence |
 
 Minimum automatic mode:

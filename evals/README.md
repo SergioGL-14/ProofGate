@@ -59,3 +59,16 @@ See [scenarios.md](scenarios.md) for the initial benchmark catalog.
 See [phase-2-report.md](phase-2-report.md) for the completed base-versus-ProofGate comparison.
 See [runs/phase-2/](runs/phase-2/README.md) for preserved submissions and
 reproducible run evidence.
+
+## Real-Repository Runs
+
+| Run | Scope | Verdict |
+|---|---|---|
+| [PG-R01](runs/PG-R01-supercompara-report.md) | SuperCompara domain fix | `FAIL`: trial contract violation recorded |
+| [PG-R02](runs/PG-R02-on-call-guard-report.md) | ON-CALL Guard Unity domain fix | `PASS` |
+| [PG-R03](runs/PG-R03-vacuum-windows-report.md) | Vacuum Windows destructive-path audit | `FAIL`: unsafe behavior found |
+| [PG-R04](runs/PG-R04-queuelib-report.md) | `scrapy/queuelib` regression and fix | `PASS` |
+| [PG-R05](runs/PG-R05-infrahome-report.md) | INFRAHOME repository improvement cycle | `PASS` |
+| [PG-R06](runs/PG-R06-opencode-commands-report.md) | Initial OpenCode command evidence | `FAIL` |
+| [PG-R07](runs/PG-R07-opencode-skill-registration-report.md) | OpenCode global skill registration | `FAIL` |
+| [PG-R08](runs/PG-R08-opencode-commands-report.md) | Corrected OpenCode command validation | `PASS` |

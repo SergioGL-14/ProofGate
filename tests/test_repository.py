@@ -16,21 +16,80 @@ ROOT = Path(__file__).resolve().parents[1]
 SKILL = ROOT / "skills" / "proofgate" / "SKILL.md"
 
 
+def _create_import_marker(project: Path) -> Path | None:
+    """Create a unittest package marker and return it only when cleanup is safe."""
+    marker = project / "__init__.py"
+    if marker.exists():
+        return None
+
+    marker.touch()
+    return marker
+
+
 class ProofGatePackageTests(unittest.TestCase):
     """Verify that distribution files preserve ProofGate's core contract."""
 
     def test_required_files_exist(self) -> None:
         required = (
             ROOT / "README.md",
+            ROOT / "CHANGELOG.md",
             ROOT / "LICENSE",
             SKILL,
             ROOT / "templates" / "contract.md",
             ROOT / "templates" / "report.md",
             ROOT / "evals" / "README.md",
             ROOT / "evals" / "scenarios.md",
+            ROOT / "evals" / "runs" / "PG-R06-opencode-commands-report.md",
         )
 
         self.assertEqual([], [str(path.relative_to(ROOT)) for path in required if not path.is_file()])
+
+    def test_command_prompts_bind_operations_and_permissions(self) -> None:
+        commands = ROOT / "commands"
+        expected = {
+            "proofgate-plan.md": ("`plan` operation", "Do not edit files", "PROOFGATE PLAN (NO VERDICT)"),
+            "proofgate-build.md": ("`build` operation", "edit only within", "exact final verdict"),
+            "proofgate-verify.md": ("`verify` operation", "Do not modify tracked project content", "explicit authorization"),
+            "proofgate-audit.md": ("`audit` operation", "without editing", "issue the audit verdict"),
+        }
+
+        self.assertEqual(
+            set(expected),
+            {path.name for path in commands.glob("proofgate-*.md")},
+        )
+        self.assertTrue((commands / "README.md").is_file())
+        for filename, required_phrases in expected.items():
+            text = (commands / filename).read_text(encoding="utf-8")
+            self.assertRegex(text, r"\A---\ndescription: .+\n---\n")
+            for phrase in required_phrases:
+                self.assertIn(phrase, text)
+            self.assertIn("$ARGUMENTS", text)
+            if filename != "proofgate-build.md":
+                self.assertNotIn("edit only within", text)
+
+        roadmap = (ROOT / "ROADMAP.md").read_text(encoding="utf-8")
+        self.assertIn("## Commands", roadmap)
+        self.assertIn("Completed on 2026-08-24", roadmap)
+        self.assertNotIn("- `/proofgate-*` commands", roadmap)
+
+    def test_changelog_indexes_validation_reports(self) -> None:
+        changelog = (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
+        reports = sorted((ROOT / "evals" / "runs").glob("PG-R*-report.md"))
+
+        self.assertGreater(reports, [])
+        for report in reports:
+            relative = report.relative_to(ROOT).as_posix()
+            self.assertIn(f"({relative})", changelog)
+        self.assertIn("(evals/phase-2-report.md)", changelog)
+
+    def test_import_marker_preserves_existing_files(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            project = Path(directory)
+            marker = project / "__init__.py"
+            marker.write_text("user content", encoding="utf-8")
+
+            self.assertIsNone(_create_import_marker(project))
+            self.assertEqual("user content", marker.read_text(encoding="utf-8"))
 
     def test_skill_has_valid_portable_frontmatter(self) -> None:
         text = SKILL.read_text(encoding="utf-8")
@@ -153,7 +212,7 @@ class ProofGatePackageTests(unittest.TestCase):
         self.assertIn("review/inspect/findings requests to `audit`", compact_skill)
         self.assertIn("Read-only intent always overrides the build default", compact_skill)
         self.assertIn('A combined "verify and fix" request is `build`', compact_skill)
-        self.assertIn("Pure `verify` is always read-only", compact_skill)
+        self.assertIn("Pure `verify` never edits tracked project content or fixes failures", compact_skill)
         self.assertIn("`infra` is an operational profile", compact_skill)
         self.assertIn("security-sensitive infrastructure means `infra ultra`", compact_skill)
         self.assertIn("Intensity: `<lite|full|ultra>`", contract)
@@ -358,11 +417,11 @@ class ProofGatePackageTests(unittest.TestCase):
                     project = submissions / fixture.name / variant
                     self.assertTrue(project.is_dir())
 
-                    import_marker = project / "__init__.py"
-                    import_marker.touch()
-                    self.addCleanup(
-                        lambda marker=import_marker: marker.unlink() if marker.exists() else None
-                    )
+                    import_marker = _create_import_marker(project)
+                    if import_marker is not None:
+                        self.addCleanup(
+                            lambda marker=import_marker: marker.unlink() if marker.exists() else None
+                        )
 
                     submitted_files = {
                         path.relative_to(project): path.read_bytes()

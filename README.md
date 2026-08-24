@@ -17,12 +17,17 @@ critical false `PASS` verdicts from ProofGate. See
 [`evals/phase-2-report.md`](evals/phase-2-report.md). Phase 3 applied the full
 cycle to an unseen real repository: it found and fixed a latent defect in
 `scrapy/queuelib` with red-first regression tests across six backends
-([PG-R04](evals/runs/PG-R04-queuelib-report.md)). ProofGate is not installed
-globally. Phase 4 completed on 2026-08-24 through a controlled INFRAHOME
-repository-improvement cycle across five public repositories; see
+([PG-R04](evals/runs/PG-R04-queuelib-report.md)). Phase 4 completed on
+2026-08-24 through a controlled INFRAHOME repository-improvement cycle across
+five public repositories; see
 [`PG-R05`](evals/runs/PG-R05-infrahome-report.md). The pilot confirmed that the
 portable contract is sufficient for interactive work, so no standalone runner,
 host adapter, or project policy file was added without demonstrated friction.
+The four operation commands were packaged and validated in OpenCode on
+2026-08-24. The failed evidence-boundary and skill-registration runs remain
+visible as [`PG-R06`](evals/runs/PG-R06-opencode-commands-report.md) and
+[`PG-R07`](evals/runs/PG-R07-opencode-skill-registration-report.md); the clean
+rerun is [`PG-R08`](evals/runs/PG-R08-opencode-commands-report.md).
 
 ## Engineering Doctrine
 
@@ -62,6 +67,10 @@ Operations are independent from intensity: `plan`, `build`, `verify`, and
 `verify this with ProofGate infra ultra`. When no intensity accompanies
 `infra`, it uses `full`.
 
+Portable command prompts for these operations are in [`commands/`](commands/).
+Copy them into a host's supported command directory; the `proofgate` skill must
+also be available to that host.
+
 ## Lifecycle
 
 ```text
@@ -77,6 +86,7 @@ or unexecuted required gate cannot be reported as passed.
 
 ```text
 skills/proofgate/SKILL.md  Portable agent contract
+commands/                  Portable operation command prompts
 templates/                 Contract and report skeletons
 evals/                     Evaluation protocol, fixtures, and run evidence
 tests/                     Repository contract tests
@@ -87,8 +97,10 @@ tests/                     Repository contract tests
 ### OpenCode
 
 Point `skills.paths` at this repository or copy `skills/proofgate/` into a
-project or global OpenCode skill directory. No OpenCode configuration is
-changed by this repository.
+project or global OpenCode skill directory. Copy the four `proofgate-*.md`
+files into `.opencode/command/` for one project or
+`~/.config/opencode/command/` for the current user. This repository does not
+change OpenCode configuration automatically.
 
 ### Codex and Other Agents
 

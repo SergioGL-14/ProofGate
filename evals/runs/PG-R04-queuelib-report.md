@@ -55,9 +55,9 @@ External real repository: `scrapy/queuelib`, cloned locally at revision
 - `PriorityQueue.pop()` does not share the defect (it returns `m` without a
   truthiness check); no other truthiness checks on items were found within the
   reviewed scope.
-- Reported upstream as https://github.com/scrapy/queuelib/issues/88; the fix
-  and the tests live in the local clone pending the maintainers' preferred
-  contribution path.
+- Reported upstream as https://github.com/scrapy/queuelib/issues/88. A
+  maintainer acknowledged the report and closed the issue on 2026-08-24. The
+  local fix and tests were not submitted as an upstream patch.
 
 ## Verdict Basis
 

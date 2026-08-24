@@ -6,23 +6,32 @@ The controlled INFRAHOME pilot is complete; remaining items stay deferred
 until they remove demonstrated friction. Directions that already lost the
 argument are kept at the bottom so they are not re-proposed blindly.
 
-## Commands and project policy
+## Commands
 
-The skill currently ships as instructions and every setting lives in the
-session. Repeated use is now confirmed across five projects. Candidates are:
+Portable prompts for `plan`, `build`, `verify`, and `audit` live in
+[`commands/`](commands/). Completed on 2026-08-24 after a fresh passing OpenCode
+and `microsoft/VSSDK-Analyzers` trial. The two failed attempts remain preserved
+as [`PG-R06`](evals/runs/PG-R06-opencode-commands-report.md) and
+[`PG-R07`](evals/runs/PG-R07-opencode-skill-registration-report.md); the passing
+run is [`PG-R08`](evals/runs/PG-R08-opencode-commands-report.md).
 
-- `/proofgate-*` commands where the host supports them (`plan`, `build`,
-  `verify`, `audit`).
+The prompts bind each command to one operation in the existing skill. They do
+not duplicate lifecycle rules and are not a standalone runner or host adapter.
+
+## Project policy
+
+Settings still live in the session. Remaining candidates are:
+
 - Mode selection persisting across sessions instead of per session.
 - `.proofgate/policy.yml` defining per-project minimum mode, protected paths,
   and required gates.
 - Detection of unauthorized changes to contract, tests, or protected
   configuration during BUILD, checked against that policy file.
 
-Decision after the pilot: no command wrapper or `.proofgate/policy.yml` was
-added. Plain portable instructions were sufficient for the interactive hosts,
-and adding an unused policy format would create a second contract to maintain.
-Revisit only when unattended execution or host friction makes one necessary.
+No executable wrapper or `.proofgate/policy.yml` is justified yet. An unused
+policy format would create a second contract to maintain. Revisit project
+policy only when public-repository use demonstrates repeated configuration or
+authorization friction.
 
 ## Builder and verifier separation
 
