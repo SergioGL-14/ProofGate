@@ -14,7 +14,8 @@ def _resolve_path(path: Path) -> Path:
 
 def _request_paths(root: Path, requested_path: str) -> tuple[Path, Path]:
     """Return the containment-check path and the path opened by the fixture."""
-    return _resolve_path(root / requested_path), root / unquote(requested_path)
+    decoded_path = unquote(requested_path).replace("\\", "/")
+    return _resolve_path(root / decoded_path), root / decoded_path
 
 
 def read_workspace_text(workspace: str | Path, requested_path: str) -> str:
@@ -23,8 +24,8 @@ def read_workspace_text(workspace: str | Path, requested_path: str) -> str:
         raise ValueError("requested_path must be a non-empty string")
 
     root = _resolve_path(Path(workspace))
-    resolved_path, _ = _request_paths(root, unquote(requested_path))
+    resolved_path, opened_path = _request_paths(root, requested_path)
     if not resolved_path.is_relative_to(root):
         raise ValueError("path escapes workspace")
 
-    return resolved_path.read_text(encoding=ENCODING)
+    return opened_path.read_text(encoding=ENCODING)
