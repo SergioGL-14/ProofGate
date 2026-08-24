@@ -78,7 +78,9 @@ class ConcurrentOracleTests(unittest.TestCase):
     def test_visible_suite_detects_stale_read_regression(self) -> None:
         original = concurrent_counter.apply_concurrent_updates
         concurrent_counter.apply_concurrent_updates = stale_read_updates
-        suite = unittest.defaultTestLoader.discover(str(PROJECT), pattern="test*.py")
+        suite = unittest.defaultTestLoader.discover(
+            str(PROJECT), pattern="test*.py", top_level_dir=str(PROJECT)
+        )
         result = unittest.TestResult()
         try:
             suite.run(result)

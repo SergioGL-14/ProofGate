@@ -39,7 +39,9 @@ class BoundaryOracleTests(unittest.TestCase):
             return original(size)
 
         batch_limits.accepts_batch_size = reject_exact_maximum
-        suite = unittest.defaultTestLoader.discover(str(PROJECT), pattern="test*.py")
+        suite = unittest.defaultTestLoader.discover(
+            str(PROJECT), pattern="test*.py", top_level_dir=str(PROJECT)
+        )
         result = unittest.TestResult()
         try:
             suite.run(result)

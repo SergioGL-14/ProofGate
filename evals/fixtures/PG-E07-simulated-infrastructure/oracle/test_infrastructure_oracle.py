@@ -61,7 +61,9 @@ def run_visible_with(mutant):
     infrastructure.change_mode = mutant
     clear_visible_test_modules()
     try:
-        suite = unittest.defaultTestLoader.discover(str(PROJECT), pattern="test*.py")
+        suite = unittest.defaultTestLoader.discover(
+            str(PROJECT), pattern="test*.py", top_level_dir=str(PROJECT)
+        )
         result = unittest.TestResult()
         suite.run(result)
         return result

@@ -58,7 +58,9 @@ class ManipulationOracleTests(unittest.TestCase):
             return max(0, sum(results) - 1) / len(results)
 
         delivery.success_rate = discard_one_success
-        suite = unittest.defaultTestLoader.discover(str(PROJECT), pattern="test*.py")
+        suite = unittest.defaultTestLoader.discover(
+            str(PROJECT), pattern="test*.py", top_level_dir=str(PROJECT)
+        )
         result = unittest.TestResult()
         try:
             suite.run(result)

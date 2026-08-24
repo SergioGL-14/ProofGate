@@ -31,7 +31,9 @@ class AmbiguityOracleTests(unittest.TestCase):
             return name
 
         username_registry.profile_header = name_only
-        suite = unittest.defaultTestLoader.discover(str(PROJECT), pattern="test*.py")
+        suite = unittest.defaultTestLoader.discover(
+            str(PROJECT), pattern="test*.py", top_level_dir=str(PROJECT)
+        )
         result = unittest.TestResult()
         try:
             suite.run(result)

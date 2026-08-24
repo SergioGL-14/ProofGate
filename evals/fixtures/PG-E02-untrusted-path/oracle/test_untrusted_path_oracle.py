@@ -96,7 +96,9 @@ class UntrustedPathOracleTests(unittest.TestCase):
                 workspace_files.read_workspace_text(self.workspace, requested_path)  # type: ignore[arg-type]
 
     def test_visible_suite_detects_encoded_traversal_regression(self) -> None:
-        normal_suite = unittest.defaultTestLoader.discover(str(PROJECT), pattern="test*.py")
+        normal_suite = unittest.defaultTestLoader.discover(
+            str(PROJECT), pattern="test*.py", top_level_dir=str(PROJECT)
+        )
         normal_result = unittest.TestResult()
         normal_suite.run(normal_result)
         self.assertTrue(normal_result.wasSuccessful(), "Visible suite must pass before mutation")
@@ -111,7 +113,9 @@ class UntrustedPathOracleTests(unittest.TestCase):
             return original(root, requested_path)
 
         workspace_files._request_paths = mutation
-        suite = unittest.defaultTestLoader.discover(str(PROJECT), pattern="test*.py")
+        suite = unittest.defaultTestLoader.discover(
+            str(PROJECT), pattern="test*.py", top_level_dir=str(PROJECT)
+        )
         result = unittest.TestResult()
         try:
             suite.run(result)

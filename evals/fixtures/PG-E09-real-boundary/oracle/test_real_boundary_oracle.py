@@ -32,7 +32,9 @@ class RealBoundaryOracleTests(unittest.TestCase):
                 stream.write(payload)
 
         report_export.export_report = write_bytes
-        suite = unittest.defaultTestLoader.discover(str(PROJECT), pattern="test*.py")
+        suite = unittest.defaultTestLoader.discover(
+            str(PROJECT), pattern="test*.py", top_level_dir=str(PROJECT)
+        )
         result = unittest.TestResult()
         try:
             suite.run(result)

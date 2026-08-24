@@ -80,7 +80,9 @@ class MigrationOracleTests(unittest.TestCase):
     def test_visible_suite_detects_missing_rollback(self) -> None:
         original = user_migration.migrate_users
         user_migration.migrate_users = non_atomic_migration
-        suite = unittest.defaultTestLoader.discover(str(PROJECT), pattern="test*.py")
+        suite = unittest.defaultTestLoader.discover(
+            str(PROJECT), pattern="test*.py", top_level_dir=str(PROJECT)
+        )
         result = unittest.TestResult()
         try:
             suite.run(result)
