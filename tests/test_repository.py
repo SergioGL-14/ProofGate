@@ -224,6 +224,7 @@ class ProofGatePackageTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             project = Path(temp) / "project"
             shutil.copytree(fixture / "project", project)
+            (project / "__init__.py").touch()
 
             implementation = project / "batch_limits.py"
             implementation.write_text(
@@ -341,7 +342,10 @@ class ProofGatePackageTests(unittest.TestCase):
             baseline_files = {
                 path.relative_to(fixture / "project"): path.read_bytes()
                 for path in (fixture / "project").rglob("*")
-                if path.is_file() and path.suffix != ".pyc" and "__pycache__" not in path.parts
+                if path.is_file()
+                and path.name != "__init__.py"
+                and path.suffix != ".pyc"
+                and "__pycache__" not in path.parts
             }
             scenario = "-".join(fixture.name.split("-", 2)[:2])
             baseline_row = next(
@@ -354,10 +358,19 @@ class ProofGatePackageTests(unittest.TestCase):
                     project = submissions / fixture.name / variant
                     self.assertTrue(project.is_dir())
 
+                    import_marker = project / "__init__.py"
+                    import_marker.touch()
+                    self.addCleanup(
+                        lambda marker=import_marker: marker.unlink() if marker.exists() else None
+                    )
+
                     submitted_files = {
                         path.relative_to(project): path.read_bytes()
                         for path in project.rglob("*")
-                        if path.is_file() and path.suffix != ".pyc" and "__pycache__" not in path.parts
+                        if path.is_file()
+                        and path.name != "__init__.py"
+                        and path.suffix != ".pyc"
+                        and "__pycache__" not in path.parts
                     }
                     changed = {
                         path
