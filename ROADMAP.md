@@ -54,6 +54,28 @@ is [`PG-R05`](evals/runs/PG-R05-infrahome-report.md). The pilot established
 that the contract works for documentation, PowerShell, Python, CI, security,
 and hardware-adjacent repository work without a standalone runner.
 
+## VSSDK-Analyzers contribution
+
+Suggested by the PG-R08 external-repository trial. The
+`microsoft/VSSDK-Analyzers` repo ships analyzers VSSDK001-VSSDK009 but only
+VSSDK001, VSSDK002, and VSSDK006 include code fixes. The remaining six
+analyzers (VSSDK003, VSSDK004, VSSDK005, VSSDK007, VSSDK008, VSSDK009) report
+diagnostics without offering automated fixes. Contributing code fixes for one or
+more of these, plus the new VSSDK010 analyzer proposed in
+[issue #230](https://github.com/microsoft/VSSDK-Analyzers/issues/230), would be
+a concrete public-repository validation of the ProofGate build workflow. The
+concrete steps would be:
+
+1. Clone the repo, install the repo-local .NET SDK via `init.ps1`, implement the
+   analyzer (`VSSDK010SwitchToMainThreadAsyncCancellationTokenAnalyzer.cs`) and
+   code fix (`VSSDK010SwitchToMainThreadAsyncCancellationTokenCodeFix.cs`).
+2. Write positive and negative tests: calls with token, calls without token, and
+   calls when `VsShellUtilities.ShutdownToken` is unavailable to the compilation.
+3. Register the new rule in `AnalyzerReleases.Unshipped.md`.
+4. Verify the existing 141 tests still pass and the new tests pass.
+
+Requires Microsoft CLA and explicit user authorization before any fork or PR.
+
 ## Considered and rejected
 
 - Standalone structured runner (JSON reports, executable hashes): snapshots
