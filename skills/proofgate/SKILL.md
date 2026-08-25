@@ -391,7 +391,9 @@ Keep the human report concise and evidence-heavy:
 
 ```text
 PROOFGATE: <PASS|FAIL|BLOCKED|EXCEPTION>
-Mode: <mode> <operation>
+Intensity: <lite|full|ultra>
+Profile: <standard|infra>
+Operation: <plan|build|verify|audit>
 
 Contract:
 - <ID> <result> - <evidence>

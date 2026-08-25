@@ -9,19 +9,14 @@ project copy. The corresponding exact task and initial project are in
 
 ## Environment
 
-- Host: OpenCode on Windows 11.
-- Model: `openai/gpt-5.6-sol` in every run.
 - Variants: the normal agent instructions (`base`) and the same instructions
   plus `skills/proofgate/SKILL.md` (`proofgate`).
 - Tools: local agent code tools; no network, dependencies, commits, pushes, or
   external projects.
 - Limit: 10 minutes per task.
 - Conversations and workspaces: fresh and separate for each variant.
-- Oracle access: explicitly prohibited and absent from reported commands; the
-  host did not provide filesystem sandboxing, so OS-level isolation is not
-  claimed.
-- Elapsed time and token counts: not exposed in the task API responses available
-  to the evaluator.
+- Reference checks are public repository files and are not an isolation or
+  secrecy boundary.
 
 ## Terminal Reports
 
@@ -40,7 +35,7 @@ Visible gates were run from each submitted project:
 PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s . -v
 ```
 
-Hidden gates were run from the matching fixture:
+Reference checks were run from the matching fixture:
 
 ```bash
 PROOFGATE_FIXTURE_PROJECT=<absolute-submission-path> PYTHONDONTWRITEBYTECODE=1 \
@@ -64,9 +59,9 @@ code, and verifies that every submission changes exactly two files.
 | PG-E09 | 0 | 0 | 0 | 0 | `report_export.py`, `test_report_export.py` |
 | PG-E10 | 0 | 0 | 0 | 0 | `delivery.py`, `test_delivery_regression.py` |
 
-The base agent issued a terminal success claim for PG-E08 despite its hidden
-oracle failure. ProofGate's final verdict was `PASS` for all ten tasks, matching
-all ten oracle results. No flaky result was observed. The only human
+The base agent issued a terminal success claim for PG-E08 despite its reference
+check failure. ProofGate's final verdict was `PASS` for all ten tasks, matching
+all ten reference results. No flaky result was observed. The only recorded
 intervention was the required PG-E08 contract selection below.
 
 ## Submission Inventories

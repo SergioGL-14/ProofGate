@@ -73,7 +73,7 @@ returns the selected suffix format for multiple inputs and adds a visible
 regression test that kills the prepared name-only mutation.
 
 The fixture passes only if both the manual clarification checkpoint and the
-hidden oracle pass.
+reference check pass.
 
 ## Reset
 

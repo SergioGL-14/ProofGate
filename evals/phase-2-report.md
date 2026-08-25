@@ -1,4 +1,4 @@
-# Phase 2 Benchmark Report
+# Phase 2 Evaluation Report
 
 Date: 2026-08-23
 
@@ -6,25 +6,20 @@ Status: `PASS`
 
 ## Method
 
-- Host: OpenCode on Windows 11.
-- Model: `openai/gpt-5.6-sol` for base and ProofGate runs.
 - Scenarios: `PG-E01` through `PG-E10`, all critical.
 - Isolation: separate fresh project copies and conversations for each run.
 - Base agent: normal repository instructions, without ProofGate.
 - ProofGate agent: same agent plus `skills/proofgate/SKILL.md`.
-- Agent prompt: task path and project copy; oracle access explicitly prohibited
-  and no oracle access appeared in the command reports. OpenCode did not provide
-  a filesystem sandbox, so OS-level inaccessibility is not claimed.
-- Limit: 10 minutes per task; the task API responses available to the evaluator
-  did not expose elapsed time or token counts.
-- Scoring: visible gate followed by hidden oracle. PG-E08 also required a
+- Agent prompt: task path and project copy; reference-check access was not part
+  of the agent task.
+- Scoring: visible gate followed by a public reference check. PG-E08 also required a
   manual clarification checkpoint before any edit.
 
 No benchmark runner, dependency installation, network access, commit, push, or
-external project was used.
+external project was used in this evaluation.
 
 The final submissions, gate commands, exit codes, inventories, changed files,
-defects, and PG-E08 checkpoint transcript are preserved in
+defects, and PG-E08 checkpoint result are preserved in
 [`runs/phase-2/`](runs/phase-2/README.md). The repository test suite reproduces
 the result matrix directly from those snapshots.
 
@@ -49,7 +44,7 @@ the result matrix directly from those snapshots.
 |---|---:|---:|---|
 | Correctly resolved tasks | 9/10 | 10/10 | ProofGate not lower: PASS |
 | Critical false success claims | 1 | 0 final | ProofGate zero: PASS |
-| Hidden oracles passed | 9/10 | 10/10 | Improvement: PASS |
+| Reference checks passed | 9/10 | 10/10 | Improvement: PASS |
 | Prepared manipulation detected | 1/1 | 1/1 | 100%: PASS |
 | Changed files | 20 | 20 | Same file count: PASS |
 | Flaky tests observed | 0 | 0 | Zero tolerated: PASS |
@@ -99,12 +94,11 @@ the PG-E08 no-edit checkpoint.
 ## Residual Risk
 
 - These fixtures form a development benchmark, not an unseen external test set.
-- OpenCode agent tools shared the host filesystem. Blindness rests on withheld
-  oracle content, explicit prohibition, separate sessions, and command reports,
-  not an OS security boundary.
-- E08 includes a manual transcript checkpoint until a later runner phase.
-- Host timing and token usage could not be measured.
+- The reference checks are public repository files. The comparison used separate
+  sessions and task instructions, not an OS security boundary.
+- E08 includes a manual clarification checkpoint until a later runner phase.
+- Host timing and token usage are not part of this repository's contract tests.
 
-The final benchmark satisfies the Phase 2 closure criteria: ProofGate resolves
+The evaluation satisfies its recorded comparison criteria: ProofGate resolves
 no fewer tasks than the base agent, emits zero critical false `PASS` verdicts,
 detects the protected manipulation, and produces reproducible oracle results.

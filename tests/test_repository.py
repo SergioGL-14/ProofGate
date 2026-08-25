@@ -37,9 +37,14 @@ class ProofGatePackageTests(unittest.TestCase):
             SKILL,
             ROOT / "templates" / "contract.md",
             ROOT / "templates" / "report.md",
+            ROOT / "CONTRIBUTING.md",
+            ROOT / "SECURITY.md",
+            ROOT / "docs" / "architecture.md",
+            ROOT / "docs" / "evaluation.md",
+            ROOT / "docs" / "usage.md",
             ROOT / "evals" / "README.md",
             ROOT / "evals" / "scenarios.md",
-            ROOT / "evals" / "runs" / "PG-R06-opencode-commands-report.md",
+            ROOT / "evals" / "runs" / "PG-R06-command-validation-report.md",
         )
 
         self.assertEqual([], [str(path.relative_to(ROOT)) for path in required if not path.is_file()])
@@ -68,19 +73,39 @@ class ProofGatePackageTests(unittest.TestCase):
                 self.assertNotIn("edit only within", text)
 
         roadmap = (ROOT / "ROADMAP.md").read_text(encoding="utf-8")
-        self.assertIn("## Commands", roadmap)
-        self.assertIn("Completed on 2026-08-24", roadmap)
-        self.assertNotIn("- `/proofgate-*` commands", roadmap)
+        self.assertIn("## Deferred", roadmap)
+        self.assertIn("## Not Planned", roadmap)
+        self.assertNotIn("VSSDK", roadmap)
 
     def test_changelog_indexes_validation_reports(self) -> None:
         changelog = (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
+        evaluations = (ROOT / "evals" / "README.md").read_text(encoding="utf-8")
         reports = sorted((ROOT / "evals" / "runs").glob("PG-R*-report.md"))
 
         self.assertGreater(reports, [])
         for report in reports:
             relative = report.relative_to(ROOT).as_posix()
-            self.assertIn(f"({relative})", changelog)
-        self.assertIn("(evals/phase-2-report.md)", changelog)
+            self.assertIn(f"({relative.removeprefix('evals/')})", evaluations)
+        self.assertIn("## Unreleased", changelog)
+        self.assertIn("(phase-2-report.md)", evaluations)
+
+    def test_public_markdown_excludes_local_and_work_log_details(self) -> None:
+        forbidden = (
+            "C:\\Users\\",
+            "D:\\",
+            "VSSDK-Analyzers",
+            "INFRAHOME",
+            "SuperCompara",
+            "SergioGL-14",
+            "gpt-5.6-sol",
+        )
+        markdown = "\n".join(
+            path.read_text(encoding="utf-8")
+            for path in ROOT.rglob("*.md")
+            if ".git" not in path.parts
+        )
+        for value in forbidden:
+            self.assertNotIn(value, markdown)
 
     def test_import_marker_preserves_existing_files(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -229,11 +254,11 @@ class ProofGatePackageTests(unittest.TestCase):
         evaluation = (ROOT / "evals" / "README.md").read_text(encoding="utf-8")
 
         self.assertEqual(10, len(re.findall(r"^\| PG-E\d{2} \| Yes \|", scenarios, re.MULTILINE)))
-        self.assertIn("Hidden oracle for `PASS`", scenarios)
+        self.assertIn("Reference check for `PASS`", scenarios)
         self.assertIn("Every scenario currently listed is critical", evaluation)
-        self.assertIn("Post-fix real-boundary hidden test passes and fails against the baseline fixture", scenarios)
+        self.assertIn("Post-fix real-boundary reference test passes and fails against the baseline fixture", scenarios)
 
-    def test_pg_e01_fixture_has_passing_visible_tests_and_failing_oracle(self) -> None:
+    def test_pg_e01_fixture_has_passing_visible_tests_and_failing_reference_check(self) -> None:
         fixture = ROOT / "evals" / "fixtures" / "PG-E01-boundary"
         required = (
             fixture / "README.md",
@@ -253,14 +278,14 @@ class ProofGatePackageTests(unittest.TestCase):
         )
         self.assertEqual(0, visible.returncode, visible.stdout + visible.stderr)
 
-        hidden = subprocess.run(
+        reference = subprocess.run(
             [sys.executable, "-m", "unittest", "discover", "-s", "oracle", "-v"],
             cwd=fixture,
             capture_output=True,
             text=True,
             check=False,
         )
-        self.assertNotEqual(0, hidden.returncode, "Prepared defect must fail the hidden oracle")
+        self.assertNotEqual(0, reference.returncode, "Prepared defect must fail the reference check")
 
         boundary = subprocess.run(
             [
@@ -277,7 +302,7 @@ class ProofGatePackageTests(unittest.TestCase):
         )
         self.assertNotEqual(0, boundary.returncode, "The prepared boundary defect must fail directly")
 
-    def test_pg_e01_oracle_accepts_a_correct_fix_with_regression(self) -> None:
+    def test_pg_e01_reference_check_accepts_a_correct_fix_with_regression(self) -> None:
         fixture = ROOT / "evals" / "fixtures" / "PG-E01-boundary"
 
         with tempfile.TemporaryDirectory() as temp:
@@ -331,7 +356,7 @@ class ProofGatePackageTests(unittest.TestCase):
             loose_minimum = run_oracle()
             self.assertNotEqual(0, loose_minimum.returncode, "Accepting zero must fail")
 
-    def test_all_fixture_baselines_pass_visible_gates_and_fail_hidden_oracles(self) -> None:
+    def test_all_fixture_baselines_pass_visible_gates_and_fail_reference_checks(self) -> None:
         fixtures = sorted((ROOT / "evals" / "fixtures").iterdir())
         self.assertEqual(10, len(fixtures))
 
@@ -354,7 +379,7 @@ class ProofGatePackageTests(unittest.TestCase):
                 )
                 self.assertEqual(0, visible.returncode, visible.stdout + visible.stderr)
 
-                hidden = subprocess.run(
+                reference = subprocess.run(
                     [sys.executable, "-m", "unittest", "discover", "-s", "oracle", "-v"],
                     cwd=fixture,
                     env=environment,
@@ -362,7 +387,7 @@ class ProofGatePackageTests(unittest.TestCase):
                     text=True,
                     check=False,
                 )
-                self.assertNotEqual(0, hidden.returncode, f"{fixture.name} baseline must fail its oracle")
+                self.assertNotEqual(0, reference.returncode, f"{fixture.name} baseline must fail its reference check")
 
     def test_phase_two_submissions_reproduce_reported_results(self) -> None:
         fixtures = ROOT / "evals" / "fixtures"

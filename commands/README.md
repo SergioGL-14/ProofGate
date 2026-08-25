@@ -1,7 +1,8 @@
 # ProofGate Commands
 
 These portable command prompts bind a host command to one ProofGate operation.
-They require the `proofgate` skill to be available to the host.
+They require the `proofgate` skill to be available to the host. They contain no
+host-specific lifecycle rules; those live in the skill.
 
 | Command | Operation | Editing |
 |---|---|---|
