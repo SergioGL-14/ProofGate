@@ -6,9 +6,9 @@ evidence, quality gates, and adversarial checks. It is not a release plan.
 
 ## Current Direction
 
-The next work must validate ProofGate against a small real repository. The
-subject may use any language, framework, or host. It is a test environment for
-the skill, not a product dependency or an invitation to contact its maintainers.
+Continue validating ProofGate against small real repositories. A subject may
+use any language, framework, or host. It is a test environment for the skill,
+not a product dependency or an invitation to contact its maintainers.
 
 Each pilot should:
 

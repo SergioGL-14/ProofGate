@@ -27,9 +27,23 @@ material risk, not added as decoration.
 - `commands/`: prompts for `plan`, `build`, `verify`, and `audit` operations.
 - `templates/`: reusable contract and evidence-report formats.
 - `evals/`: public fixtures and recorded validation evidence.
-- `evals/runner.py`: evaluator-side workspace preparation, inventory, and gate execution.
+- `evals/runner.py`: evaluator-side workspace preparation, inventory, and gate
+  execution.
 - `tests/`: contract tests for the package itself.
 - `AGENTS.md`: repository rules that keep development focused on evidence.
+
+## Validation Evidence
+
+- The reproducible 10-scenario comparison resolved 9/10 tasks without
+  ProofGate and 10/10 with it, reducing critical false success claims from one
+  to zero. See [the Phase 2 report](evals/phase-2-report.md).
+- The first real-repository application found
+  [`RoundRobinQueue.pop()` dropping falsy items](https://github.com/scrapy/queuelib/issues/88)
+  in `scrapy/queuelib`; the maintainers fixed it in
+  [PR #89](https://github.com/scrapy/queuelib/pull/89).
+- PG-R09 validated the evaluator runner against a small JavaScript subject with
+  a prepared defect, demonstrating visible-green/reference-red rejection and a
+  regression-first final `PASS`.
 
 ## Operations
 
