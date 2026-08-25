@@ -1,4 +1,4 @@
-"""Hidden oracle for PG-E04."""
+"""Public reference check for PG-E04."""
 
 import os
 from pathlib import Path

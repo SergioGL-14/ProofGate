@@ -1,4 +1,4 @@
-"""Hidden oracle for PG-E06."""
+"""Public reference check for PG-E06."""
 
 import base64
 from functools import wraps

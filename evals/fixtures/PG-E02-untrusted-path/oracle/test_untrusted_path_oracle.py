@@ -1,4 +1,4 @@
-"""Hidden oracle for PG-E02."""
+"""Public reference check for PG-E02."""
 
 import inspect
 import os

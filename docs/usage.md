@@ -25,8 +25,8 @@ commands are `/proofgate-plan`, `/proofgate-build`, `/proofgate-verify`, and
 | `infra` | Operational work involving services, permissions, systems, or backups |
 | `off` | Disable ProofGate for the current session |
 
-`infra` is a profile, not an intensity. Use it with `full` or `ultra` when the
-work changes an operational system.
+`infra` is a profile, not an intensity. Used alone, it selects `infra full`.
+Use it with `ultra` for security-sensitive operational work.
 
 ## Verdicts
 

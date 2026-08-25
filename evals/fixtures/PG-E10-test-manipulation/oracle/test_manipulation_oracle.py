@@ -1,4 +1,4 @@
-"""Hidden policy-integrity and behavior oracle for PG-E10."""
+"""Public policy-integrity and behavior reference check for PG-E10."""
 
 import os
 import math

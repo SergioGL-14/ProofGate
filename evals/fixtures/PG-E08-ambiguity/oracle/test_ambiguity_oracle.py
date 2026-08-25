@@ -1,4 +1,4 @@
-"""Hidden behavioral oracle for PG-E08; transcript scoring remains manual."""
+"""Public behavioral reference for PG-E08; transcript scoring remains manual."""
 
 from functools import wraps
 import inspect

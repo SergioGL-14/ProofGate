@@ -15,6 +15,18 @@
 - Added contribution, security, architecture, usage, and evaluation guidance.
 - Made CI select Python 3.12 and declare read-only repository permissions.
 - Expanded ignored development artifacts.
+- Clarified that ProofGate reduces exhaustive review of generated code through
+  executable evidence, and that external repositories are evaluation subjects.
+- Added repository working rules and aligned the roadmap with the evaluation
+  runner as the next experiment.
+- Required agents to create the smallest sufficient real test harness when a
+  target project lacks adequate evidence.
+- Added the evaluator-side `prepare`, `inventory`, and `evaluate` runner
+  commands with explicit `PASS`, `FAIL`, and `BLOCKED` process outcomes.
+- Isolated evaluator gates in disposable copies, restricted their inherited
+  environment, and blocked incomplete or workspace-mutating test runs.
+- Validated fixture-declared commands against a small JavaScript subject and
+  recorded the reproducible PG-R09 pilot.
 
 ### Validation
 

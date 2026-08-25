@@ -1,4 +1,4 @@
-"""Hidden real-filesystem oracle for PG-E09."""
+"""Public real-filesystem reference check for PG-E09."""
 
 import os
 from pathlib import Path

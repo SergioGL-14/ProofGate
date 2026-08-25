@@ -43,8 +43,29 @@ For each comparison:
 5. Record the diff, commands, verdict, interventions, elapsed time, and oracle
    result before deleting the temporary workspace.
 
-No benchmark runner is part of this repository. These steps remain manual until
-an automated runner is justified.
+`evals/runner.py` automates workspace preparation, canonical inventories, and
+the visible and public reference gates. Agent execution, separate
+conversations, manual checkpoints, and base-versus-ProofGate orchestration
+remain evaluator responsibilities.
+
+```bash
+python evals/runner.py prepare PG-E01 <workspace>
+python evals/runner.py inventory <workspace>
+python evals/runner.py evaluate PG-E01 <workspace>
+```
+
+External evaluator fixtures may pass their directory path instead of a packaged
+ID and define commands in `runner.toml`. See
+[the evaluation guide](../docs/evaluation.md#evaluation-runner). Commands are
+JSON-recorded argument arrays requested with `shell=False`; every gate also
+captures non-empty completion evidence so a bare exit code 0 cannot become
+`PASS`.
+
+The runner uses disposable copies and an allowlisted environment, but it is not
+an operating-system sandbox. Run only trusted local subjects unless the host
+provides filesystem, process, and network isolation. Captured gate output is
+printed verbatim, as is the exact command argument vector; neither may contain
+secrets.
 
 ## Critical Rule
 
@@ -72,3 +93,4 @@ reproducible run evidence.
 | [PG-R06](runs/PG-R06-command-validation-report.md) | Initial command validation | `FAIL` |
 | [PG-R07](runs/PG-R07-skill-registration-report.md) | Skill registration validation | `FAIL` |
 | [PG-R08](runs/PG-R08-command-package-report.md) | Command package validation | `PASS` |
+| [PG-R09](runs/PG-R09-evaluation-runner-report.md) | Language-independent evaluation runner pilot | `PASS` |

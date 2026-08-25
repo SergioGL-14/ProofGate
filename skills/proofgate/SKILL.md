@@ -14,6 +14,11 @@ largest possible test suite. Study the affected system, define what must be
 observable, choose the smallest sufficient proof, implement the smallest
 responsible change, try to break it, and issue an exact verdict.
 
+Its purpose is to reduce exhaustive manual review of agent-generated code by
+making confidence proportional to executed evidence. Existing tests are not
+assumed sufficient: the agent must assess whether they exercise the real
+behavior and can detect plausible defects.
+
 ## Persistence
 
 Default to `full build` only for requests that explicitly ask to implement or
@@ -140,6 +145,10 @@ edge cases correctly and remains readable.
 - Keep the diff limited to the contract.
 - Add only evidence relevant to the request and plausible regressions.
 - Do not install dependencies when project or platform tools suffice.
+- When the project has no adequate test harness, add the smallest
+  ecosystem-standard setup and real tests needed to prove the contract.
+- When a harness exists but cannot detect a plausible failure, strengthen it
+  without weakening or replacing existing evidence.
 
 ## Lifecycle
 
@@ -264,6 +273,12 @@ when viable and useful. For documentation, infrastructure, or systems without
 a harness, define the observable precheck and postcheck before making changes.
 State why an advanced class is omitted only when its omission leaves a
 material risk or the user asked for it.
+
+Missing tests, quality gates, or metrics are not evidence that the work is
+safe. For code changes, create the smallest real evidence needed for the
+contract. Use coverage, mutation, static analysis, security, performance, or
+other advanced checks when they can detect a material risk that ordinary tests
+cannot; do not add them as ceremony or claim their absence as a passing gate.
 
 Coverage is a supporting metric, not proof by itself. Prefer a small test that
 executes the real path over many mocked tests.

@@ -1,4 +1,4 @@
-"""Hidden oracle for PG-E05."""
+"""Public reference check for PG-E05."""
 
 from copy import deepcopy
 import os

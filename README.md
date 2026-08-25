@@ -1,11 +1,25 @@
 # ProofGate
 
-ProofGate is a portable evidence contract for software work. It guides an
-agent through system inspection, acceptance criteria, risk analysis, focused
-tests, implementation, adversarial checks, and an explicit verdict.
+ProofGate is a portable evidence contract for agents that generate software.
+It reduces exhaustive manual review by requiring generated work to demonstrate
+correctness through a contract, tests, quality gates, metrics when available,
+adversarial checks, and an explicit verdict.
 
-It is an instruction package, not a runner or a deployment system. The core
-package has no runtime dependencies and does not modify host configuration.
+The portable skill is an instruction package, not an agent runner or deployment
+system. The repository includes a limited evaluator-side fixture runner; the
+core package has no runtime dependencies and does not modify host configuration.
+
+The objective is not to make an agent write more code or to replace engineering
+judgment with a checklist. The objective is to surround generated changes with
+enough executable evidence and restrictions that unsupported confidence cannot
+be mistaken for approval.
+
+If a target project has no adequate tests, ProofGate requires the agent to
+assess the real behavior and add the smallest ecosystem-standard test setup and
+evidence needed by the contract. Existing green tests are not accepted at face
+value when they cannot detect plausible defects. Coverage, mutation, static
+analysis, security, or performance checks are selected when they detect a
+material risk, not added as decoration.
 
 ## What It Provides
 
@@ -13,7 +27,9 @@ package has no runtime dependencies and does not modify host configuration.
 - `commands/`: prompts for `plan`, `build`, `verify`, and `audit` operations.
 - `templates/`: reusable contract and evidence-report formats.
 - `evals/`: public fixtures and recorded validation evidence.
+- `evals/runner.py`: evaluator-side workspace preparation, inventory, and gate execution.
 - `tests/`: contract tests for the package itself.
+- `AGENTS.md`: repository rules that keep development focused on evidence.
 
 ## Operations
 
@@ -47,6 +63,21 @@ python -m unittest discover -s tests -v
 
 The test suite validates the package layout, command boundaries, templates,
 public evaluation fixtures, and reproducibility checks.
+
+The evaluation runner automates fixture mechanics without launching agents:
+
+```bash
+python evals/runner.py prepare PG-E01 <workspace>
+python evals/runner.py inventory <workspace>
+python evals/runner.py evaluate PG-E01 <workspace>
+```
+
+`evaluate` returns process status 0 for `PASS`, 1 for `FAIL`, and 2 for
+`BLOCKED`. It cannot turn missing manual evidence into a pass.
+
+External repositories may be used as experimental subjects to test ProofGate.
+They are not part of this package, and no external Issue or Pull Request is
+created without explicit authorization.
 
 ## Documentation
 

@@ -43,6 +43,7 @@ class ProofGatePackageTests(unittest.TestCase):
             ROOT / "docs" / "evaluation.md",
             ROOT / "docs" / "usage.md",
             ROOT / "evals" / "README.md",
+            ROOT / "evals" / "runner.py",
             ROOT / "evals" / "scenarios.md",
             ROOT / "evals" / "runs" / "PG-R06-command-validation-report.md",
         )
@@ -171,6 +172,14 @@ class ProofGatePackageTests(unittest.TestCase):
         )
         for phrase in required_phrases:
             self.assertIn(phrase, text)
+
+    def test_skill_requires_real_evidence_when_tests_are_inadequate(self) -> None:
+        text = SKILL.read_text(encoding="utf-8")
+
+        self.assertIn("no adequate test harness", text)
+        self.assertIn("smallest\n  ecosystem-standard setup and real tests", text)
+        self.assertIn("Missing tests, quality gates, or metrics are not evidence", text)
+        self.assertIn("mutation", text)
 
     def test_templates_use_stable_contract_ids_and_exact_gate_states(self) -> None:
         contract = (ROOT / "templates" / "contract.md").read_text(encoding="utf-8")

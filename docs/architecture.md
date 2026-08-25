@@ -2,9 +2,14 @@
 
 ## Scope
 
-ProofGate is a portable instruction package. Its main interface is the skill
-contract consumed by an agent host. The repository does not contain an
-application service, persistence layer, or execution engine.
+ProofGate is a portable evidence contract for agents that generate software.
+Its main interface is the skill contract consumed by an agent host. The
+contract surrounds generated work with restrictions and executable evidence so
+that exhaustive manual review is not the primary quality mechanism.
+
+The repository does not contain an application service, persistence layer, or
+agent execution engine. The evaluator-side runner measures fixture outcomes;
+it is not the product's runtime and does not execute agents.
 
 ## Modules
 
@@ -31,6 +36,17 @@ Templates are convenience material; they do not override the skill contract.
 fixtures are useful regression material, but their reference checks are not a
 security boundary and must not be described as hidden.
 
+Real external repositories may be used as experimental subjects. The subject
+is evidence for ProofGate, not a dependency, a product target, or permission to
+contact its maintainers.
+
+`evals/runner.py` prepares fresh fixture workspaces, computes canonical
+inventories, and executes visible and public reference checks. It deliberately
+does not manage conversations, invoke an agent, interpret agent reports, or
+claim filesystem isolation. Optional evaluator-owned TOML declares command
+arrays and completion evidence for non-Python fixtures without adding rules to
+the portable skill or target project.
+
 ### Repository tests
 
 `tests/` checks the distribution package and runs the public fixtures. It is a
@@ -52,12 +68,13 @@ project gains executable behavior with more than one implementation.
 
 ## Deliberate Limits
 
-- There is no standalone runner.
+- There is no standalone runtime or agent launcher.
 - There is no project policy file.
 - There is no host-specific adapter.
 - Contract locking is procedural; a self-generated hash is not an independent
   authorization boundary.
 
-Those capabilities may become useful for unattended execution, but adding
-them now would create a second contract and additional maintenance without a
-demonstrated need.
+Those capabilities may become useful for unattended execution, but adding them
+now would create additional maintenance without a demonstrated need. The
+evaluation runner remains limited to evaluator-side mechanics until real pilots
+justify more automation.
