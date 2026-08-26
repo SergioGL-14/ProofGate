@@ -47,4 +47,18 @@ For OpenCode:
    command directory.
 3. Start a new session and verify that the `proofgate` skill is available.
 
+Minimal `opencode.json` configuration:
+
+```json
+{
+  "skills": {
+    "paths": ["/path/to/ProofGate/skills"]
+  }
+}
+```
+
+Replace the example path with the cloned repository's `skills/` directory. The
+command files are installed separately because the host does not load commands
+from `skills.paths` automatically.
+
 No command should silently install dependencies or change global configuration.

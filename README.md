@@ -1,5 +1,7 @@
 # ProofGate
 
+[![Checks](actions/workflows/checks.yml/badge.svg?branch=main)](actions/workflows/checks.yml)
+
 ProofGate is a portable evidence contract for agents that generate software.
 It reduces exhaustive manual review by requiring generated work to demonstrate
 correctness through a contract, tests, quality gates, metrics when available,
@@ -63,6 +65,18 @@ ProofGate is installed through the host's skill mechanism. For OpenCode, add
 this repository's `skills/` directory to `skills.paths` and copy the four
 command files from `commands/` to a supported command directory. The repository
 does not change global configuration automatically.
+
+Example `opencode.json` entry:
+
+```json
+{
+  "skills": {
+    "paths": ["/path/to/ProofGate/skills"]
+  }
+}
+```
+
+Replace the example path with the cloned repository's `skills/` directory.
 
 Other hosts can load the skill file through their supported instruction or
 skill mechanism and use the same operations in natural language.

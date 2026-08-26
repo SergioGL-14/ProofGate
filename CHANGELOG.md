@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 1.0.8 - 2026-08-26
+
 ### Changed
 
 - Reorganized the public documentation around the skill, operations, templates,
