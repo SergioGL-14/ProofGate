@@ -40,6 +40,11 @@ Real external repositories may be used as experimental subjects. The subject
 is evidence for ProofGate, not a dependency, a product target, or permission to
 contact its maintainers.
 
+PG-R11 is an example of this boundary: Gitleaks remains an external subject,
+while ProofGate stores only the sanitized revision, commands, outcomes, diff
+assessment, verdict, and limitations in `evals/runs/`. The pilot improved the
+quality of the evidence record, not the portable skill's runtime behavior.
+
 `evals/runner.py` prepares fresh fixture workspaces, computes canonical
 inventories, and executes visible and public reference checks. It deliberately
 does not manage conversations, invoke an agent, interpret agent reports, or

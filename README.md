@@ -46,6 +46,11 @@ material risk, not added as decoration.
 - PG-R09 validated the evaluator runner against a small JavaScript subject with
   a prepared defect, demonstrating visible-green/reference-red rejection and a
   regression-first final `PASS`.
+- PG-R11 applied the workflow to Gitleaks' unreadable-file handling. It showed
+  that normal tests can pass while a candidate still fails formatting and its
+  most important permission-based acceptance test is unavailable on Windows;
+  ProofGate therefore recorded `FAIL` with the portability limitation instead
+  of inferring approval. See [the PG-R11 report](evals/runs/PG-R11-gitleaks-unreadable-files-report.md).
 
 ## Operations
 
@@ -106,6 +111,12 @@ python evals/runner.py evaluate PG-E01 <workspace>
 External repositories may be used as experimental subjects to test ProofGate.
 They are not part of this package, and no external Issue or Pull Request is
 created without explicit authorization.
+
+The latest pilot did not add a runtime feature or change the portable skill.
+The improvement is in the evidence: ProofGate now records a concrete
+cross-ecosystem case where green tests were insufficient, separates a known
+format failure from an unavailable permission test, and preserves the reason
+for the final non-pass verdict.
 
 ## Documentation
 
