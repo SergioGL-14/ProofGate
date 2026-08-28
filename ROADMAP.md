@@ -25,7 +25,10 @@ small JavaScript subject. PG-R10 then exercised the full evidence workflow
 against the public `simonw/sqlite-utils` 4.1.1 release: it reproduced a real
 dependent-view defect, validated a local regression and adversarial checks,
 and correctly recorded `BLOCKED` when the clean baseline already failed
-Pyright. The runner must not become a runtime for the portable skill.
+Pyright. PG-R11 extended the workflow to the Go ecosystem using Gitleaks and
+showed that ProofGate can preserve a non-pass verdict when functional tests
+are green but formatting fails and the decisive permission test cannot run on
+the current host. The runner must not become a runtime for the portable skill.
 
 ## Completed recently
 
@@ -35,11 +38,22 @@ Pyright. The runner must not become a runtime for the portable skill.
 - The pilot confirmed that a passing functional suite can coexist with a
   blocked quality gate, and that the final verdict must preserve that
   distinction rather than being inferred from the green tests alone.
+- PG-R11 added a reproducible cross-ecosystem report for an incomplete-scan
+  defect: it records test, build, vet, format, and portability evidence, and
+  distinguishes a concrete `FAIL` from a platform `BLOCKED` acceptance path.
 - The README now exposes the repository Checks status through the real GitHub
   Actions badge endpoint, and the public documentation test allows that
   intentional repository URL.
 
-## Next pilot
+## Next step
+
+Close the PG-R11 evidence gap in a Linux or macOS environment, or with a
+portable permission-failure fixture, and re-run the Gitleaks candidate after
+formatting is corrected. This is the next validation step because the current
+report cannot establish the core unreadable-file acceptance behavior on
+Windows.
+
+## Following pilot
 
 Select another medium-sized public repository, preferably in a different
 language or ecosystem, and repeat the same evidence-first workflow. Keep the

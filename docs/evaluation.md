@@ -115,6 +115,12 @@ External validation must record the repository revision, exact task, allowed
 tools, commands and exit codes, final diff, verdict, interventions, and known
 limitations. A missing mandatory record is `BLOCKED`, not an inferred pass.
 
+PG-R11 demonstrates why the distinction matters in practice. Against Gitleaks,
+the candidate's normal tests and build passed, while `gofmt` failed and the
+permission-denial end-to-end test was skipped on Windows. The report records
+`FAIL` for the concrete formatting defect and separately records the platform
+limitation as `BLOCKED`; neither condition is silently converted into `PASS`.
+
 ## Known Limitations
 
 - The public fixtures are not an unseen benchmark.
@@ -124,3 +130,6 @@ limitations. A missing mandatory record is `BLOCKED`, not an inferred pass.
   one.
 - Current evaluations still depend on the agent and host to execute and report
   evidence honestly; no independent runner enforces every claim yet.
+- Permission-sensitive contracts may require a host with stronger filesystem
+  semantics than the evaluation host. A skipped platform test is missing
+  evidence, not evidence of success.
