@@ -1,6 +1,6 @@
 # ProofGate
 
-[![Checks](.github/workflows/checks.yml/badge.svg?branch=main)](.github/workflows/checks.yml)
+[![Checks](https://github.com/SergioGL-14/ProofGate/actions/workflows/checks.yml/badge.svg?branch=main)](https://github.com/SergioGL-14/ProofGate/actions/workflows/checks.yml)
 
 ProofGate is a portable evidence contract for agents that generate software.
 It reduces exhaustive manual review by requiring generated work to demonstrate

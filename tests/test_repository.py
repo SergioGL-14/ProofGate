@@ -97,7 +97,6 @@ class ProofGatePackageTests(unittest.TestCase):
             "VSSDK-Analyzers",
             "INFRAHOME",
             "SuperCompara",
-            "SergioGL-14",
             "gpt-5.6-sol",
         )
         markdown = "\n".join(
