@@ -94,3 +94,4 @@ reproducible run evidence.
 | [PG-R07](runs/PG-R07-skill-registration-report.md) | Skill registration validation | `FAIL` |
 | [PG-R08](runs/PG-R08-command-package-report.md) | Command package validation | `PASS` |
 | [PG-R09](runs/PG-R09-evaluation-runner-report.md) | Language-independent evaluation runner pilot | `PASS` |
+| [PG-R10](runs/PG-R10-sqlite-utils-dependent-views-report.md) | sqlite-utils dependent views pilot | `BLOCKED`: pre-existing Pyright baseline |
