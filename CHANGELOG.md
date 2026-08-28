@@ -2,6 +2,32 @@
 
 ## Unreleased
 
+### Added
+
+- Recorded PG-R10, a pilot against the public `simonw/sqlite-utils` 4.1.1
+  release, including its dependent-view defect, regression evidence, and
+  explicit `BLOCKED` verdict for the pre-existing Pyright baseline.
+- Recorded PG-R11, a Gitleaks pilot against unreadable-file handling, with
+  the candidate fix's executed tests, a formatting-gate failure, and a blocked
+  permission-denial reference path on Windows.
+
+### Changed
+
+- Updated the GitHub Actions checkout and Python setup actions through the
+  reviewed Dependabot pull requests.
+- Corrected the README Checks badge to use the GitHub Actions workflow badge
+  endpoint.
+
+### Validation
+
+- The repository contract suite passes with 34 tests.
+- The PG-R10 report records the external subject, pinned revision, commands,
+  exit codes, diff, verdict, and limitations without including the local
+  experiment copy.
+- The PG-R11 report records the Gitleaks subject, pinned revisions, Go gate
+  results, a concrete formatting failure, and the Windows limitation that
+  blocked the permission-denial acceptance test.
+
 ## 1.0.8 - 2026-08-26
 
 ### Changed
