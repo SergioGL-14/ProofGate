@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 1.0.9 - 2026-08-30
+
 ### Added
 
 - Recorded PG-R10, a pilot against the public `simonw/sqlite-utils` 4.1.1
@@ -10,12 +12,12 @@
 - Recorded PG-R11, a Gitleaks pilot against unreadable-file handling, with
   the candidate fix's executed tests, a formatting-gate failure, and a blocked
   permission-denial reference path on Windows.
-- Added the PG-R11 closure checklist and the PG-R12 `bat` CLI/IO boundary
-  pilot plan, keeping unavailable evidence separate from passing gates.
+- Added the PG-R11 closure checklist, keeping unavailable evidence separate
+  from passing gates.
 - Clarified that PG-R11 is terminally environment-bounded on the available
   Windows host.
-- Documented Windows as the current reference platform and clarified the
-  scope and rationale of the planned `bat` pilot in the public documentation.
+- Documented Windows as the current reference platform and Linux as a
+  supported validation environment.
 - Recorded PG-R12, a Docker-isolated `bat` CLI/IO pilot. The Rust baseline and
   real valid, empty, missing-path, and directory checks passed; no new bounded
   defect was found, so the pilot is explicitly `BLOCKED` rather than inferred
@@ -27,10 +29,14 @@
   reviewed versions.
 - Corrected the README Checks badge to use the GitHub Actions workflow badge
   endpoint.
+- Renamed the phase-specific comparison report to the effectiveness report and
+  clarified that its result applies to the recorded scenarios.
+- Aligned the README with the completed PG-R12 report and removed the
+  superseded pilot plan.
 
 ### Validation
 
-- The repository contract suite passes with 34 tests.
+- The repository contract suite passes with 35 tests.
 - The PG-R10 report records the external subject, pinned revision, commands,
   exit codes, diff, verdict, and limitations without including the local
   experiment copy.

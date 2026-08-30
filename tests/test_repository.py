@@ -90,6 +90,19 @@ class ProofGatePackageTests(unittest.TestCase):
         self.assertIn("## Unreleased", changelog)
         self.assertIn("(effectiveness-report.md)", evaluations)
 
+    def test_completed_pg_r12_has_one_current_public_record(self) -> None:
+        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        roadmap = (ROOT / "ROADMAP.md").read_text(encoding="utf-8")
+        report = ROOT / "evals" / "runs" / "PG-R12-bat-cli-io-pilot-report.md"
+        obsolete_plan = ROOT / "evals" / "runs" / "PG-R12-bat-cli-io-pilot-plan.md"
+
+        self.assertIn("## Completed pilot: bat", readme)
+        self.assertIn("## Completed pilot: PG-R12", roadmap)
+        self.assertNotIn("## Next pilot: bat", readme)
+        self.assertNotIn("The next pilot will use", readme)
+        self.assertTrue(report.is_file())
+        self.assertFalse(obsolete_plan.exists())
+
     def test_public_markdown_excludes_local_and_work_log_details(self) -> None:
         forbidden = (
             "C:\\Users\\",
