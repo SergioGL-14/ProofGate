@@ -44,7 +44,7 @@ the current host. The runner must not become a runtime for the portable skill.
   Actions badge endpoint, and the public documentation test allows that
   intentional repository URL.
 
-## Next step: record PG-R11 as environment-bounded
+## Closed run: PG-R11 environment-bounded
 
 PG-R11 is now closed as a Windows-limited evaluation. Its report records the
 terminal local disposition: `FAIL` for formatting and `BLOCKED` for the real

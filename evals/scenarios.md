@@ -4,7 +4,7 @@ Each fixture contains a reproducible defect, visible tests, public reference
 checks, and a reset procedure under `evals/fixtures/`. The reference checks are
 included for repository regression testing; they are not hidden from someone
 who can read the repository. Historical comparison results are recorded in
-`phase-2-report.md`.
+`effectiveness-report.md`.
 
 | ID | Critical | Scenario | Prepared defect | Reference check for `PASS` |
 |---|---|---|---|---|

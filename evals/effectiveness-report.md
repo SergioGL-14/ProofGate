@@ -1,8 +1,12 @@
-# Phase 2 Evaluation Report
+# ProofGate Effectiveness Report
 
 Date: 2026-08-23
 
-Status: `PASS`
+Evaluation result: `PASS`
+
+This report records the reproducible base-versus-ProofGate comparison. It is
+evidence about the effectiveness of the skill on the listed scenarios, not a
+claim that every project or future task will pass.
 
 ## Method
 
@@ -15,8 +19,9 @@ Status: `PASS`
 - Scoring: visible gate followed by a public reference check. PG-E08 also required a
   manual clarification checkpoint before any edit.
 
-No benchmark runner, dependency installation, network access, commit, push, or
-external project was used in this evaluation.
+The comparison was executed without the benchmark runner that now reproduces
+its preserved gates. No dependency installation, network access, commit, push,
+or external project was used in this evaluation.
 
 The final submissions, gate commands, exit codes, inventories, changed files,
 defects, and PG-E08 checkpoint result are preserved in

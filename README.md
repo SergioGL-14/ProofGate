@@ -50,7 +50,7 @@ material risk, not added as decoration.
 
 - The reproducible 10-scenario comparison resolved 9/10 tasks without
   ProofGate and 10/10 with it, reducing critical false success claims from one
-  to zero. See [the Phase 2 report](evals/phase-2-report.md).
+  to zero. See [the effectiveness report](evals/effectiveness-report.md).
 - The first real-repository application found a falsy-item handling defect in
   `scrapy/queuelib`, providing a concrete cross-project validation case.
 - PG-R09 validated the evaluator runner against a small JavaScript subject with
