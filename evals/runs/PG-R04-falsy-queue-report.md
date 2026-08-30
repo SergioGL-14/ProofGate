@@ -26,4 +26,4 @@ cover the shared queue mixin across the supported memory and disk backends.
 ## Limits
 
 The run covered the queue implementation and its test suite only. It does not
-claim that unrelated repository issues were resolved.
+claim that unrelated defects were resolved.

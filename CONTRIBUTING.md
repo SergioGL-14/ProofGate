@@ -25,9 +25,9 @@ Documentation changes must keep links and examples accurate.
 ## External Evaluation Subjects
 
 Use external repositories as experimental subjects when testing ProofGate. The
-subject may use any language or host and does not need an open Issue. Keep the
-subject separate from this repository, record the exact revision and evidence,
-and do not open an Issue or Pull Request without explicit user authorization.
+subject may use any language or host. Keep it separate from this repository,
+record the exact revision and evidence, and do not modify the subject as part
+of the evaluation.
 
 ## Evaluation Changes
 

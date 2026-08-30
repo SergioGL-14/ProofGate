@@ -11,15 +11,14 @@ Operation: `build`
 - Repository: [simonw/sqlite-utils](https://github.com/simonw/sqlite-utils)
 - Public revision: `4.1.1` (`458b3ab5b169eff1f8319c44a7c320c68f54d28b`)
 - Language and gates: Python, pytest, Black, Flake8, mypy, Pyright, and ty
-- Local copies only; no upstream files, Issue, Pull Request, commit, or push
-  was created.
+- Local copies only; the subject checkout was not modified.
 
 ## Task
 
 Make `Table.transform()` work when the table is referenced by a SQLite view.
 The transformation must not rewrite dependent view definitions to point at an
 internal temporary or backup table. The behavior was reported publicly in
-[issue #831](https://github.com/simonw/sqlite-utils/issues/831).
+reported dependent-view defect.
 
 ## Scan
 

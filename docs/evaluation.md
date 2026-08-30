@@ -28,10 +28,15 @@ The fixture set covers boundary handling, untrusted paths, public contracts,
 concurrency, migrations, secret leakage, operational safeguards, ambiguity,
 real integration paths, and test manipulation.
 
-External subjects may use any language, framework, or host. Prefer small real
+External subjects may use any language, framework, or host. Prefer medium-sized real
 repositories with an existing test gate and a bounded task. Do not select a
-subject only because it has an open Issue. Do not open an Issue or Pull Request
-as part of an evaluation without explicit authorization.
+subject only because it has an open defect report.
+
+The current evaluation platform is Windows. Linux and macOS are not supported
+or validated by this project at present. A subject or contract that requires
+their filesystem, permissions, compiler, or runtime semantics must therefore
+be reported as `BLOCKED` when those semantics cannot be reproduced locally.
+This is a documented scope boundary, not a reason to infer a successful result.
 
 ## Running The Repository Checks
 
@@ -133,3 +138,27 @@ limitation as `BLOCKED`; neither condition is silently converted into `PASS`.
 - Permission-sensitive contracts may require a host with stronger filesystem
   semantics than the evaluation host. A skipped platform test is missing
   evidence, not evidence of success.
+
+## Preflight and risk controls
+
+Before a real-repository run, record whether the host can provide each
+required capability: disposable workspace creation and cleanup, enforceable
+file permissions, loopback-only networking, the project's toolchain, and any
+required compiler or browser runtime. If a capability is unavailable, mark
+the affected contract `BLOCKED` before interpreting green tests.
+
+Keep external subjects in disposable local copies. Do not place credentials in
+command arguments, environment variables captured by reports, fixture output,
+or test data. Prefer loopback services and network-disabled execution for
+boundary tests. Treat public reference checks as regression material, never
+as secrecy or isolation boundaries.
+
+Every pilot report must separate three states when they coexist: an
+implementation `FAIL`, an unavailable evidence path `BLOCKED`, and a passing
+gate. This is required for cases like PG-R11, where unit tests passed while
+formatting failed and the decisive permission path was skipped.
+
+An unavailable host capability may be a terminal limitation for the local
+evaluation. Close the run with an explicit bounded verdict and record what
+future capability would be needed; do not keep the roadmap blocked behind an
+operating system the project cannot access.

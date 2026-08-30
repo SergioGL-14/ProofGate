@@ -11,8 +11,7 @@ Operation: `build`
 - Repository: `sindresorhus/yocto-queue`
 - Revision: `b07eac0`
 - Language and gates: JavaScript, `npm test`, and `node:test`
-- Scope: local evaluator fixture; no upstream files, Issue, or Pull Request
-  were created.
+- Scope: local evaluator fixture; the subject checkout remained unchanged.
 
 The prepared defect changed queue iteration to stop on a falsy value. This was
 an evaluator mutation, not a defect observed in the upstream revision.
@@ -28,7 +27,7 @@ JavaScript falsy values. Preserve the public API and add regression evidence.
   baseline, and the ProofGate evaluator runner.
 - Network: allowed only for the explicitly authorized temporary development
   dependency installation.
-- Forbidden: upstream commits, pushes, Issues, Pull Requests, and changes
+- Forbidden: changes to the subject checkout or its history, and changes
   outside temporary subject and evaluator-fixture copies.
 - Isolation: disposable runner copies and an allowlisted environment; no claim
   of operating-system sandboxing.

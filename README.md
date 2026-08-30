@@ -16,6 +16,17 @@ judgment with a checklist. The objective is to surround generated changes with
 enough executable evidence and restrictions that unsupported confidence cannot
 be mistaken for approval.
 
+## Current platform
+
+ProofGate is currently developed and validated on Windows. The skill and its
+principles are intended to be portable, but Linux and macOS support is not part
+of this version: it has not been implemented or validated on those platforms.
+
+When a test depends on permissions or behavior specific to another operating
+system, ProofGate records that evidence as unavailable (`BLOCKED`) rather than
+presenting the evaluation as complete. Windows is the project's reference
+platform for now.
+
 If a target project has no adequate tests, ProofGate requires the agent to
 assess the real behavior and add the smallest ecosystem-standard test setup and
 evidence needed by the contract. Existing green tests are not accepted at face
@@ -39,10 +50,8 @@ material risk, not added as decoration.
 - The reproducible 10-scenario comparison resolved 9/10 tasks without
   ProofGate and 10/10 with it, reducing critical false success claims from one
   to zero. See [the Phase 2 report](evals/phase-2-report.md).
-- The first real-repository application found
-  [`RoundRobinQueue.pop()` dropping falsy items](https://github.com/scrapy/queuelib/issues/88)
-  in `scrapy/queuelib`; the maintainers fixed it in
-  [PR #89](https://github.com/scrapy/queuelib/pull/89).
+- The first real-repository application found a falsy-item handling defect in
+  `scrapy/queuelib`, providing a concrete cross-project validation case.
 - PG-R09 validated the evaluator runner against a small JavaScript subject with
   a prepared defect, demonstrating visible-green/reference-red rejection and a
   regression-first final `PASS`.
@@ -51,6 +60,19 @@ material risk, not added as decoration.
   most important permission-based acceptance test is unavailable on Windows;
   ProofGate therefore recorded `FAIL` with the portability limitation instead
   of inferring approval. See [the PG-R11 report](evals/runs/PG-R11-gitleaks-unreadable-files-report.md).
+
+## Next pilot: bat
+
+The next pilot will use [bat](https://github.com/sharkdp/bat), a Rust command-
+line tool that extends `cat` with syntax highlighting, file reading, and
+controlled content presentation. It is a medium-sized project with real CLI,
+filesystem, and user-output behavior, as well as its own project gates.
+
+It was selected to test ProofGate beyond the Python and Go projects already
+used, while keeping the exercise manageable. The focus will be a specific CLI
+or IO boundary where correct behavior, errors, invalid paths, and real
+integration evidence can be compared. The complete plan is in
+[`PG-R12`](evals/runs/PG-R12-bat-cli-io-pilot-plan.md).
 
 ## Operations
 
@@ -109,8 +131,7 @@ python evals/runner.py evaluate PG-E01 <workspace>
 `BLOCKED`. It cannot turn missing manual evidence into a pass.
 
 External repositories may be used as experimental subjects to test ProofGate.
-They are not part of this package, and no external Issue or Pull Request is
-created without explicit authorization.
+They are not part of this package or its dependency graph.
 
 The latest pilot did not add a runtime feature or change the portable skill.
 The improvement is in the evidence: ProofGate now records a concrete
