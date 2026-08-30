@@ -11,6 +11,14 @@ The repository does not contain an application service, persistence layer, or
 agent execution engine. The evaluator-side runner measures fixture outcomes;
 it is not the product's runtime and does not execute agents.
 
+## Reference platform
+
+Current development and validation take place on Windows. The skill remains as
+platform-independent as practical, but this version does not claim Linux or
+macOS support because it has not been implemented or validated there.
+Evaluations that depend on another system's permissions, toolchain, or runtime
+semantics must preserve that limitation in their verdict.
+
 ## Modules
 
 ### Skill
@@ -37,8 +45,8 @@ fixtures are useful regression material, but their reference checks are not a
 security boundary and must not be described as hidden.
 
 Real external repositories may be used as experimental subjects. The subject
-is evidence for ProofGate, not a dependency, a product target, or permission to
-contact its maintainers.
+is evidence for ProofGate, not a dependency or a product target, and remains
+separate from this repository.
 
 PG-R11 is an example of this boundary: Gitleaks remains an external subject,
 while ProofGate stores only the sanitized revision, commands, outcomes, diff

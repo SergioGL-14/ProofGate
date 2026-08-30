@@ -23,5 +23,5 @@ workspace after the skill was registered with the host.
 ## Limits
 
 This validates command dispatch and operation boundaries. It does not validate
-an implementation for any external issue, nor does it provide host filesystem
+an implementation for any external project, nor does it provide host filesystem
 isolation.

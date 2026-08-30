@@ -10,14 +10,13 @@ Operation: `build`
 
 - Repository: [gitleaks/gitleaks](https://github.com/gitleaks/gitleaks)
 - Base revision: `b58d3f102cf3a2c84cb7f923d05c25c9b1aed84b`
-- Candidate revision: `d86cc86` from [PR #2235](https://github.com/gitleaks/gitleaks/pull/2235)
+- Candidate revision: `d86cc86`
 - Language and gates: Go, `go test`, `go vet`, `go build`, and `gofmt`
-- Local copies only; no upstream files, Issue, Pull Request, commit, or push
-  was created.
+- Local copies only; the subject checkout was not modified.
 
 ## Task
 
-Validate the open [issue #2232](https://github.com/gitleaks/gitleaks/issues/2232):
+Validate the reported Gitleaks behavior:
 an unreadable file can be skipped while the scan reports `no leaks found` and
 exits successfully. The required behavior is that incomplete scanning is
 observable as a partial scan and cannot become a false `PASS`.
@@ -66,8 +65,8 @@ observable as a partial scan and cannot become a false `PASS`.
 - The end-to-end permission denial test is explicitly skipped on Windows,
   matching the project's portability rationale; this run therefore did not
   execute the core acceptance path on the current host.
-- The open PR is a possible upstream contribution, but no external action is
-  authorized or implied by this report.
+- The candidate was evaluated only as a reference implementation; the report
+  makes no claim beyond the recorded evidence.
 
 ## Verdict rationale
 
@@ -86,3 +85,30 @@ permissions or an independently portable permission-failure fixture.
 - `go test -race` was not run because the host lacks a C compiler for cgo.
 - The candidate PR was evaluated as an external reference; the ProofGate
   repository itself was not modified beyond this report and its index entry.
+
+## Closure status
+
+PG-R11 is closed as a Windows-limited evaluation. Its core acceptance path is
+`BLOCKED`, not `PASS`, because this project does not have a host capable of
+executing the POSIX permission-denial test. No further local Windows work can
+convert that missing evidence into proof of Gitleaks' real file-opening path.
+
+If the candidate is ever re-evaluated on a suitable host, the following
+closure gates apply to the pinned revision:
+
+- `gofmt -l` returns no changed files;
+- `go test ./...` passes;
+- `go build .` passes;
+- `go vet ./...` is either clean or its baseline-equivalent warnings are
+  explicitly dispositioned by the evaluator;
+- the permission-denial end-to-end test executes, rather than being skipped,
+  on a host with enforceable unreadable-file semantics;
+- the final report records the host, exact revision, commands, exit codes,
+  changed paths, and any skipped gates.
+
+The portable evaluator cannot substitute for the last gate: a deterministic
+fixture can test ProofGate's handling of incomplete evidence, but cannot prove
+that Gitleaks' real file-opening path behaves correctly. The final disposition
+therefore remains `FAIL` for the observed formatting defect and `BLOCKED` for
+the unavailable core acceptance path. This is the terminal local verdict for
+PG-R11 unless the available host capabilities change.

@@ -6,9 +6,9 @@ evidence, quality gates, and adversarial checks. It is not a release plan.
 
 ## Current Direction
 
-Continue validating ProofGate against small real repositories. A subject may
+Continue validating ProofGate against medium-sized real repositories. A subject may
 use any language, framework, or host. It is a test environment for the skill,
-not a product dependency or an invitation to contact its maintainers.
+not a product dependency or a product target.
 
 Each pilot should:
 
@@ -16,7 +16,7 @@ Each pilot should:
 - record the baseline and available project gates;
 - compare work with and without ProofGate when practical;
 - record executed evidence, final diff, verdict, interventions, and limits;
-- avoid creating external Issues or Pull Requests without explicit approval.
+- keep evaluation subjects separate from this repository.
 
 The first evaluator-side runner now prepares fixture workspaces, records
 inventories, and executes visible and public reference checks using
@@ -33,8 +33,7 @@ the current host. The runner must not become a runtime for the portable skill.
 ## Completed recently
 
 - PG-R10 validated the workflow against a medium-sized public Python project
-  without changing the external repository or opening an upstream Issue or
-  Pull Request.
+  without changing the external repository.
 - The pilot confirmed that a passing functional suite can coexist with a
   blocked quality gate, and that the final verdict must preserve that
   distinction rather than being inferred from the green tests alone.
@@ -45,20 +44,32 @@ the current host. The runner must not become a runtime for the portable skill.
   Actions badge endpoint, and the public documentation test allows that
   intentional repository URL.
 
-## Next step
+## Next step: record PG-R11 as environment-bounded
 
-Close the PG-R11 evidence gap in a Linux or macOS environment, or with a
-portable permission-failure fixture, and re-run the Gitleaks candidate after
-formatting is corrected. This is the next validation step because the current
-report cannot establish the core unreadable-file acceptance behavior on
-Windows.
+PG-R11 is now closed as a Windows-limited evaluation. Its report records the
+terminal local disposition: `FAIL` for formatting and `BLOCKED` for the real
+permission-denial acceptance path. A portable permission-failure fixture may
+supplement evaluator coverage, but it cannot replace the real Gitleaks
+file-opening path. Do not spend further local effort trying to turn this
+environmental limitation into a `PASS`.
 
-## Following pilot
+The closure checklist is recorded in
+[`PG-R11`](evals/runs/PG-R11-gitleaks-unreadable-files-report.md). This
+distinction prevents a platform skip or a clean unit suite from becoming a
+false `PASS`.
 
-Select another medium-sized public repository, preferably in a different
-language or ecosystem, and repeat the same evidence-first workflow. Keep the
-task bounded, use the project's own gates where available, and only contribute
-upstream when the experiment produces a clearly useful, reviewed improvement.
+## Following pilot: PG-R12
+
+Run the `bat` CLI/IO boundary pilot defined in
+[`PG-R12`](evals/runs/PG-R12-bat-cli-io-pilot-plan.md). It stays in the Rust
+ecosystem and exercises a different risk profile: public CLI/error contracts,
+filesystem boundaries, and the danger of mock-only evidence. The pilot must
+remain local-only, use Windows as the declared reference platform, and stop as
+`BLOCKED` if baseline, toolchain, or a real CLI/IO boundary cannot be
+established.
+
+PG-R12 can start now; PG-R11's unavailable POSIX evidence is explicitly
+recorded rather than treated as an unfinished local task.
 
 ## Deferred
 
@@ -101,4 +112,4 @@ concrete integration problem.
 
 External-repository investigations belong in evaluation reports, not in this
 roadmap. The roadmap records capabilities justified by repeated evidence, not
-individual project choices or personal implementation decisions.
+individual project choices or private working decisions.

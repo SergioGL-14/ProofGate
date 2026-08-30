@@ -10,11 +10,17 @@
 - Recorded PG-R11, a Gitleaks pilot against unreadable-file handling, with
   the candidate fix's executed tests, a formatting-gate failure, and a blocked
   permission-denial reference path on Windows.
+- Added the PG-R11 closure checklist and the PG-R12 `bat` CLI/IO boundary
+  pilot plan, keeping unavailable evidence separate from passing gates.
+- Clarified that PG-R11 is terminally environment-bounded on the available
+  Windows host.
+- Documented Windows as the current reference platform and clarified the
+  scope and rationale of the planned `bat` pilot in the public documentation.
 
 ### Changed
 
-- Updated the GitHub Actions checkout and Python setup actions through the
-  reviewed Dependabot pull requests.
+- Updated the GitHub Actions checkout and Python setup actions to current
+  reviewed versions.
 - Corrected the README Checks badge to use the GitHub Actions workflow badge
   endpoint.
 
