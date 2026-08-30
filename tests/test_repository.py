@@ -88,7 +88,7 @@ class ProofGatePackageTests(unittest.TestCase):
             relative = report.relative_to(ROOT).as_posix()
             self.assertIn(f"({relative.removeprefix('evals/')})", evaluations)
         self.assertIn("## Unreleased", changelog)
-        self.assertIn("(phase-2-report.md)", evaluations)
+        self.assertIn("(effectiveness-report.md)", evaluations)
 
     def test_public_markdown_excludes_local_and_work_log_details(self) -> None:
         forbidden = (
@@ -402,7 +402,7 @@ class ProofGatePackageTests(unittest.TestCase):
         submissions = ROOT / "evals" / "runs" / "phase-2" / "submissions"
         evidence = (ROOT / "evals" / "runs" / "phase-2" / "README.md").read_text(encoding="utf-8")
         inventory_table = evidence.split("## Submission Inventories", 1)[1].split("## PG-E08", 1)[0]
-        report = (ROOT / "evals" / "phase-2-report.md").read_text(encoding="utf-8")
+        report = (ROOT / "evals" / "effectiveness-report.md").read_text(encoding="utf-8")
         baseline_table = report.split("## Baseline Project Hashes", 1)[1].split("## Residual Risk", 1)[0]
         expected_base_failures = {"PG-E08-ambiguity"}
         expected_changed_files = {

@@ -77,7 +77,8 @@ false `PASS` when the agent emits `PASS` while the reference check fails or
 manipulation is detected.
 
 See [scenarios.md](scenarios.md) for the initial benchmark catalog.
-See [phase-2-report.md](phase-2-report.md) for the completed base-versus-ProofGate comparison.
+See [effectiveness-report.md](effectiveness-report.md) for the completed
+base-versus-ProofGate comparison.
 See [runs/phase-2/](runs/phase-2/README.md) for preserved submissions and
 reproducible run evidence.
 

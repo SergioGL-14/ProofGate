@@ -70,7 +70,8 @@
   environment, and blocked incomplete or workspace-mutating test runs.
 - Validated fixture-declared commands against a small JavaScript subject and
   recorded the reproducible PG-R09 pilot.
-- Added a concise public evidence summary covering the Phase 2 comparison, the
+- Added a concise public evidence summary covering the reproducible
+  base-versus-ProofGate comparison, the
   accepted `scrapy/queuelib` finding, and the JavaScript runner pilot.
 
 ### Validation
