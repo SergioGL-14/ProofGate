@@ -62,19 +62,17 @@ material risk, not added as decoration.
   ProofGate therefore recorded `FAIL` with the portability limitation instead
   of inferring approval. See [the PG-R11 report](evals/runs/PG-R11-gitleaks-unreadable-files-report.md).
 
-## Next pilot: bat
+## Completed pilot: bat
 
-The next pilot will use [bat](https://github.com/sharkdp/bat), a Rust command-
-line tool that extends `cat` with syntax highlighting, file reading, and
-controlled content presentation. It is a medium-sized project with real CLI,
-filesystem, and user-output behavior, as well as its own project gates.
+PG-R12 applied ProofGate to [bat](https://github.com/sharkdp/bat), a
+medium-sized Rust command-line project with real CLI, filesystem, and
+user-output boundaries. Its formatting, build, lint, test, and adversarial
+CLI checks passed in an isolated Linux environment.
 
-It was selected to test ProofGate beyond the Python and Go projects already
-used, while keeping the exercise manageable. The focus will be a specific CLI
-or IO boundary where correct behavior, errors, invalid paths, and real
-integration evidence can be compared. The complete plan is in
-[`PG-R12`](evals/runs/PG-R12-bat-cli-io-pilot-report.md), whose baseline and
-CLI/IO checks passed but found no new bounded defect to contribute upstream.
+The pilot did not find a new bounded defect that justified changing the
+external project. ProofGate therefore recorded `BLOCKED` instead of inventing
+a contribution task. See the executed evidence and limitations in the
+[`PG-R12` report](evals/runs/PG-R12-bat-cli-io-pilot-report.md).
 
 ## Operations
 
