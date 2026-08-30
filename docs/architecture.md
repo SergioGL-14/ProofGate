@@ -13,9 +13,10 @@ it is not the product's runtime and does not execute agents.
 
 ## Reference platform
 
-Current development and validation take place on Windows. The skill remains as
-platform-independent as practical, but this version does not claim Linux or
-macOS support because it has not been implemented or validated there.
+The skill is designed for Windows and Linux. Current development and the main
+repository checks take place on Windows, and Linux workflows are validated in
+an isolated environment when the subject requires them. macOS is outside the
+current scope and is not claimed as supported until native validation exists.
 Evaluations that depend on another system's permissions, toolchain, or runtime
 semantics must preserve that limitation in their verdict.
 

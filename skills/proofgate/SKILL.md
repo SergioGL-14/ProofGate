@@ -19,6 +19,14 @@ making confidence proportional to executed evidence. Existing tests are not
 assumed sufficient: the agent must assess whether they exercise the real
 behavior and can detect plausible defects.
 
+## Platform scope
+
+The skill is designed for Windows and Linux. ProofGate's reference development
+environment is Windows, and Linux workflows are supported when validated on a
+Linux host or in an isolated Linux environment such as Docker. macOS is outside
+the current scope; native macOS behavior must be marked `BLOCKED` unless it is
+actually exercised on a Mac or macOS runner.
+
 ## Persistence
 
 Default to `full build` only for requests that explicitly ask to implement or

@@ -58,18 +58,15 @@ The closure checklist is recorded in
 distinction prevents a platform skip or a clean unit suite from becoming a
 false `PASS`.
 
-## Following pilot: PG-R12
+## Completed pilot: PG-R12
 
-Run the `bat` CLI/IO boundary pilot defined in
-[`PG-R12`](evals/runs/PG-R12-bat-cli-io-pilot-plan.md). It stays in the Rust
-ecosystem and exercises a different risk profile: public CLI/error contracts,
-filesystem boundaries, and the danger of mock-only evidence. The pilot must
-remain local-only, use Windows as the declared reference platform, and stop as
-`BLOCKED` if baseline, toolchain, or a real CLI/IO boundary cannot be
-established.
-
-PG-R12 can start now; PG-R11's unavailable POSIX evidence is explicitly
-recorded rather than treated as an unfinished local task.
+The `bat` CLI/IO boundary pilot is recorded in
+[`PG-R12`](evals/runs/PG-R12-bat-cli-io-pilot-report.md). Its Docker/Linux
+baseline and real CLI checks passed at the pinned revision, while no new
+bounded defect survived checks against the implementation, tests, and
+upstream history. The verdict is `BLOCKED` because there is no defensible
+contribution task, not because the subject failed. Native macOS behavior still
+requires a macOS runner or Mac; Docker on Windows does not provide that.
 
 ## Deferred
 

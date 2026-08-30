@@ -96,3 +96,4 @@ reproducible run evidence.
 | [PG-R09](runs/PG-R09-evaluation-runner-report.md) | Language-independent evaluation runner pilot | `PASS` |
 | [PG-R10](runs/PG-R10-sqlite-utils-dependent-views-report.md) | sqlite-utils dependent views pilot | `BLOCKED`: pre-existing Pyright baseline |
 | [PG-R11](runs/PG-R11-gitleaks-unreadable-files-report.md) | Gitleaks unreadable-file partial-scan pilot | `FAIL`: candidate formatting gate; permission E2E is also blocked on Windows |
+| [PG-R12](runs/PG-R12-bat-cli-io-pilot-report.md) | bat CLI/IO boundary pilot | `BLOCKED`: baseline and boundary checks passed; no new bounded defect found |
