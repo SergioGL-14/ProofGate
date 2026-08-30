@@ -18,14 +18,15 @@ be mistaken for approval.
 
 ## Current platform
 
-ProofGate is currently developed and validated on Windows. The skill and its
-principles are intended to be portable, but Linux and macOS support is not part
-of this version: it has not been implemented or validated on those platforms.
+ProofGate is designed for Windows and Linux. Development and the repository's
+primary contract checks run on Windows, while Linux workflows have also been
+validated in an isolated Docker environment. macOS is not part of the current
+scope: its native behavior has not been implemented or validated here.
 
 When a test depends on permissions or behavior specific to another operating
 system, ProofGate records that evidence as unavailable (`BLOCKED`) rather than
-presenting the evaluation as complete. Windows is the project's reference
-platform for now.
+presenting the evaluation as complete. Windows remains the project's reference
+platform, with Linux as the second supported validation environment.
 
 If a target project has no adequate tests, ProofGate requires the agent to
 assess the real behavior and add the smallest ecosystem-standard test setup and
@@ -72,7 +73,8 @@ It was selected to test ProofGate beyond the Python and Go projects already
 used, while keeping the exercise manageable. The focus will be a specific CLI
 or IO boundary where correct behavior, errors, invalid paths, and real
 integration evidence can be compared. The complete plan is in
-[`PG-R12`](evals/runs/PG-R12-bat-cli-io-pilot-plan.md).
+[`PG-R12`](evals/runs/PG-R12-bat-cli-io-pilot-report.md), whose baseline and
+CLI/IO checks passed but found no new bounded defect to contribute upstream.
 
 ## Operations
 

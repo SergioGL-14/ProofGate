@@ -16,6 +16,10 @@
   Windows host.
 - Documented Windows as the current reference platform and clarified the
   scope and rationale of the planned `bat` pilot in the public documentation.
+- Recorded PG-R12, a Docker-isolated `bat` CLI/IO pilot. The Rust baseline and
+  real valid, empty, missing-path, and directory checks passed; no new bounded
+  defect was found, so the pilot is explicitly `BLOCKED` rather than inferred
+  as a contribution opportunity.
 
 ### Changed
 
@@ -33,6 +37,11 @@
 - The PG-R11 report records the Gitleaks subject, pinned revisions, Go gate
   results, a concrete formatting failure, and the Windows limitation that
   blocked the permission-denial acceptance test.
+- The PG-R12 report records the pinned `bat` revision, Docker/Linux sandbox,
+  Rust gates, CLI/IO boundary results, discarded known issues, and the native
+  macOS validation limitation.
+- Clarified that the skill is designed for Windows and Linux, while native
+  macOS validation remains outside the current scope.
 
 ## 1.0.8 - 2026-08-26
 

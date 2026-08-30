@@ -32,11 +32,14 @@ External subjects may use any language, framework, or host. Prefer medium-sized 
 repositories with an existing test gate and a bounded task. Do not select a
 subject only because it has an open defect report.
 
-The current evaluation platform is Windows. Linux and macOS are not supported
-or validated by this project at present. A subject or contract that requires
-their filesystem, permissions, compiler, or runtime semantics must therefore
-be reported as `BLOCKED` when those semantics cannot be reproduced locally.
-This is a documented scope boundary, not a reason to infer a successful result.
+ProofGate is designed for Windows and Linux. Windows is the reference platform
+for the repository checks, and Linux validation is supported through a native
+Linux host or an isolated Docker environment. macOS is outside the current
+scope and has not been implemented or validated. A subject or contract that
+requires native macOS filesystem, permissions, compiler, or runtime semantics
+must therefore be reported as `BLOCKED` until a macOS runner or Mac is
+available. This is a documented scope boundary, not a reason to infer a
+successful result.
 
 ## Running The Repository Checks
 
