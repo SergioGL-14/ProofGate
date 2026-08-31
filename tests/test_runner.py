@@ -268,8 +268,28 @@ class ProofGateRunnerTests(unittest.TestCase):
                 "[runner]\n"
                 'visible = ["{python}", "-c", "pass"]\n'
                 'reference = ["{python}", "-c", "pass"]\n'
-                'visible_completion = ".*"\n'
-                'reference_completion = ".*"\n',
+                'visible_completion = "(?P<evidence>.*)"\n'
+                'reference_completion = "(?P<evidence>.*)"\n',
+                encoding="utf-8",
+            )
+
+            result = self.run_runner("evaluate", str(fixture), str(fixture / "project"))
+
+            self.assertEqual(2, result.returncode, result.stdout + result.stderr)
+            self.assertIn("must not match empty output", result.stdout)
+
+    def test_evaluate_rejects_completion_without_evidence_group(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            fixture = Path(directory) / "custom-fixture"
+            (fixture / "project").mkdir(parents=True)
+            (fixture / "oracle").mkdir()
+            (fixture / "task.md").write_text("Invalid evaluator config.\n", encoding="utf-8")
+            (fixture / "runner.toml").write_text(
+                "[runner]\n"
+                'visible = ["{python}", "-c", "pass"]\n'
+                'reference = ["{python}", "-c", "pass"]\n'
+                'visible_completion = "VISIBLE COMPLETE"\n'
+                'reference_completion = "REFERENCE COMPLETE"\n',
                 encoding="utf-8",
             )
 
@@ -277,6 +297,28 @@ class ProofGateRunnerTests(unittest.TestCase):
 
             self.assertEqual(2, result.returncode, result.stdout + result.stderr)
             self.assertIn("must define a named evidence group", result.stdout)
+
+    def test_evaluate_blocks_an_unavailable_declared_executable(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            fixture = Path(directory) / "custom-fixture"
+            project = fixture / "project"
+            (fixture / "oracle").mkdir(parents=True)
+            project.mkdir()
+            (fixture / "task.md").write_text("Unavailable gate.\n", encoding="utf-8")
+            (fixture / "runner.toml").write_text(
+                "[runner]\n"
+                'visible = ["proofgate-command-that-does-not-exist"]\n'
+                'reference = ["{python}", "-c", "print(\'REFERENCE COMPLETE\')"]\n'
+                'visible_completion = "(?P<evidence>VISIBLE COMPLETE)"\n'
+                'reference_completion = "(?P<evidence>REFERENCE COMPLETE)"\n',
+                encoding="utf-8",
+            )
+
+            result = self.run_runner("evaluate", str(fixture), str(project))
+
+            self.assertEqual(2, result.returncode, result.stdout + result.stderr)
+            self.assertIn("gate executable is unavailable", result.stdout)
+            self.assertIn("BLOCKED", result.stdout)
 
 
 if __name__ == "__main__":

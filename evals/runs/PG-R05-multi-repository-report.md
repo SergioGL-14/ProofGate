@@ -5,6 +5,12 @@
 Intensity: `full`
 Profile: `infra`
 Operation: `build`
+Record status: `legacy summary`
+
+This run predates the current recording contract. Subject identities,
+revisions, exact commands, and session metadata were not retained in the public
+record and are not reconstructed. It is project history, not reproducible
+effectiveness evidence.
 
 ## Scope
 

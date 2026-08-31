@@ -62,3 +62,15 @@ command files are installed separately because the host does not load commands
 from `skills.paths` automatically.
 
 No command should silently install dependencies or change global configuration.
+
+### Codex and other hosts
+
+The four packaged command prompts use OpenCode's command format. Codex and
+other hosts can use `skills/proofgate/SKILL.md` through their supported skill
+loader or as explicit session instructions, then select `plan`, `build`,
+`verify`, or `audit` in natural language.
+
+This is instruction-level portability, not a claim that every host exposes the
+same slash-command, permission, or filesystem model. Host-specific adapters
+remain outside the stable package until a concrete integration failure requires
+one.

@@ -33,6 +33,7 @@ class UntrustedPathOracleTests(unittest.TestCase):
         (encoded_name / "note.txt").write_text("decoded once", encoding="utf-8")
         self.outside = root / "outside.txt"
         self.outside.write_text("secret", encoding="utf-8")
+        (self.workspace / "linked.txt").write_text("link placeholder", encoding="utf-8")
         self.shared_prefix_sibling = root / "workspace-export"
         self.shared_prefix_sibling.mkdir()
         (self.shared_prefix_sibling / "outside.txt").write_text("sibling", encoding="utf-8")
@@ -77,10 +78,12 @@ class UntrustedPathOracleTests(unittest.TestCase):
 
     def test_resolved_link_escape_is_rejected_without_os_symlink(self) -> None:
         original = workspace_files._resolve_path
+        expected_link = original(self.workspace / "linked.txt")
+        resolved_outside = original(self.outside)
 
         def controlled_resolution(path: Path) -> Path:
-            if Path(path) == self.workspace / "linked.txt":
-                return self.outside
+            if original(Path(path)) == expected_link:
+                return resolved_outside
             return original(path)
 
         workspace_files._resolve_path = controlled_resolution

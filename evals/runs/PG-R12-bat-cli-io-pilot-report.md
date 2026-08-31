@@ -1,73 +1,108 @@
-# PG-R12 - bat CLI/IO boundary pilot report
+# PG-R12 - bat CLI/IO Boundary Audit
 
-`PROOFGATE BLOCKED`
+`PROOFGATE: PASS`
 
-The pilot completed its baseline and boundary checks, but did not identify a
-new, bounded defect with a stable contract that would justify changing the
-subject repository.
+Intensity: `full`
+Profile: `standard`
+Operation: `audit`
+Record status: `bounded`
 
-## Subject and reproducibility
+## Subject
 
-- Repository: `sharkdp/bat`
-- Revision: `b671e53c2cd0177beb357cf6cb997ee4215c7155`
+- Repository: [sharkdp/bat](https://github.com/sharkdp/bat)
+- Revision: [`b671e53c2cd0177beb357cf6cb997ee4215c7155`](https://github.com/sharkdp/bat/commit/b671e53c2cd0177beb357cf6cb997ee4215c7155)
 - Sandbox: disposable Docker container `rust:1.88-bookworm`
 - Toolchain: `rustc 1.88.0 (6b00bc388 2025-06-23)` and Cargo 1.88.0
-- Subject checkout was clean before and after the checks.
-- The ProofGate repository and the subject repository were kept separate.
+- Subject checkout: clean before and after the audit.
 
-## Lifecycle evidence
+## Exact Task And Limits
 
-### SCAN / CONTRACT
+Audit the real `bat` CLI file and standard-input boundary for a bounded defect
+that could justify a contribution. Distinguish valid, empty, missing, and
+directory inputs while preserving useful exit status and stderr context. Do
+not modify the subject or open an upstream issue or pull request unless a new,
+reproducible defect survives the project gates and adversarial checks.
 
-The selected boundary was the real `bat` CLI file and stdin path. The
-contract was to distinguish successful input, empty input, invalid paths, and
-directories while preserving useful exit status and stderr context.
+- Allowed tools: local source and history inspection, Docker, Cargo, and real
+  CLI invocations in the disposable Linux container.
+- Network: used to obtain the public subject and container dependencies; no
+  credentials were required or recorded.
+- Time limit, elapsed time, and token count: unavailable from the host.
+- Human interventions: selection of `bat` and the CLI/IO boundary.
 
-### THREAT / TEST DESIGN
+## Contract
 
-The main risks were conflating empty and invalid input, losing the failing
-path in the error, and obtaining a false result from a host-mounted checkout.
-The final run used a fresh Linux checkout inside the container and real CLI
-invocations, not mocks.
+| ID | Required | Result | Evidence |
+|---|---|---|---|
+| PG-A1 | Yes | `PASS` | A valid text file exits 0 and emits its expected content. |
+| PG-A2 | Yes | `PASS` | An empty file exits 0 without fabricated content. |
+| PG-A3 | Yes | `PASS` | A missing path exits 1 and stderr contains the path and OS error. |
+| PG-A4 | Yes | `PASS` | A directory is rejected with an explicit directory error. |
+| PG-I1 | Yes | `PASS` | Format, build, lint, full tests, and the tracked checkout remain clean. |
+| PG-F1 | Yes | `PASS` | No defect, patch, issue, or pull request is invented from passing evidence. |
 
-### BUILD / GAUNTLET
+## Threat And Test Design
 
-All baseline gates passed at the pinned revision:
+The material risks were conflating empty and invalid input, losing the failing
+path in the error, and accepting a false result from a Windows-mounted checkout.
+The final checks used a fresh Linux checkout inside the container and real CLI
+invocations rather than mocks.
 
-| Command | Result |
-|---|---|
-| `cargo fmt --check` | exit 0 |
-| `cargo build --locked` | exit 0 |
-| `cargo clippy --locked --all-targets --all-features` | exit 0 |
-| `cargo test --locked` | exit 0; 255 integration tests passed, with the remaining unit, snapshot, and doctests also passing |
+## Change
 
-### ADVERSARY
+- None. The operation was an audit and the selected behavior already satisfied
+  its contract.
 
-The real CLI checks produced the following results:
+## Gauntlet
 
-| Input | Result |
-|---|---|
-| Existing text file | exit 0 and expected content on stdout |
-| Missing file | exit 1 and the path plus OS error on stderr |
-| Directory | rejected with an explicit “is a directory” error |
-| Empty file | exit 0 and no fabricated content |
+| Gate | Command | Exit | Result |
+|---|---|---:|---|
+| Format | `cargo fmt --check` | 0 | `PASS` |
+| Build | `cargo build --locked` | 0 | `PASS` |
+| Lint | `cargo clippy --locked --all-targets --all-features` | 0 | `PASS` |
+| Full suite | `cargo test --locked` | 0 | `PASS`; 255 integration tests plus unit, snapshot, and doctests |
+| Existing text file | real `bat` CLI invocation | 0 | Expected content on stdout |
+| Missing file | real `bat` CLI invocation | 1 | Path and OS error on stderr |
+| Directory | real `bat` CLI invocation | nonzero | Explicit “is a directory” error |
+| Empty file | real `bat` CLI invocation | 0 | No fabricated content |
+
+## Adversarial Record
 
 An initial run against a Windows-mounted copy failed integration tests because
-shell fixtures retained CRLF line endings (`bash\r`). This was classified as a
-host-mount artifact, discarded from the verdict, and retested from a clean
-Linux checkout.
+shell fixtures retained CRLF line endings (`bash\r`). That result measured the
+host mount, not the pinned Linux checkout. It was excluded with an explicit
+reason and the entire relevant gate set was rerun from a clean checkout inside
+the Linux container.
 
-### VERDICT
+Nearby upstream history was inspected. The cache-help report was already fixed,
+and the ANSI/pager behavior was already tracked and resolved. No new bounded
+defect remained.
 
-`BLOCKED`: the subject is healthy at the pinned revision and the tested
-contract is already covered by the implementation and tests. Existing nearby
-history was also checked: the cache-help report was fixed by the subject, and
-the ANSI/pager behavior was already tracked and resolved in earlier upstream
-work. No new issue or pull request should be opened from this pilot.
+## Test Changes
+
+- None.
+
+## Run Record
+
+- Defects found: none within the selected boundary.
+- Defects introduced: none; the subject was not modified.
+- Final diff: none.
+- False `PASS`: none identified.
+- Unstable tests: none after removing the documented host-mount artifact.
+- External actions: no issue, pull request, commit, or push was created.
 
 ## Limitations
 
-Docker provided a Linux environment only. It does not validate native macOS
-behavior on this Windows host; that requires a macOS runner or physical Mac.
-No external repository files were changed, and no external GitHub action was
-performed.
+- Docker proved the selected Linux behavior only. Native macOS behavior remains
+  outside the contract and requires a macOS runner or physical Mac.
+- The exact CLI argument vectors, durations, and complete session transcript
+  were not retained, so this report is bounded rather than complete.
+- Passing this bounded audit does not claim that `bat` has no defects outside
+  the selected CLI/IO path.
+
+## Verdict Basis
+
+Every required audit condition has executed evidence, all project gates pass,
+the subject remains unchanged, and adversarial inspection found no defensible
+contribution task. A no-change `PASS` is therefore correct; absence of a defect
+is not an environmental or authorization `BLOCKED` condition.

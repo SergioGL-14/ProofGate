@@ -95,6 +95,8 @@ def load_config(fixture: Path) -> RunnerConfig:
             raise ValueError(f"runner.{name} is not a valid regex: {error}") from error
         if "evidence" not in expression.groupindex:
             raise ValueError(f"runner.{name} must define a named evidence group")
+        if expression.search("") is not None:
+            raise ValueError(f"runner.{name} must not match empty output")
     streams = {}
     for name in ("visible_completion_stream", "reference_completion_stream"):
         streams[name] = config.get(name, "combined")

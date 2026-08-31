@@ -5,6 +5,7 @@
 Intensity: `ultra`
 Profile: `standard`
 Operation: `build`
+Record status: `bounded`
 
 ## Subject
 
@@ -18,7 +19,7 @@ Operation: `build`
 Make `Table.transform()` work when the table is referenced by a SQLite view.
 The transformation must not rewrite dependent view definitions to point at an
 internal temporary or backup table. The behavior was reported publicly in
-reported dependent-view defect.
+[issue #831](https://github.com/simonw/sqlite-utils/issues/831).
 
 ## Scan
 
@@ -72,6 +73,18 @@ prevents a complete all-gates `PASS`.
 - `tests/test_transform.py`: 42 added lines.
 - `git diff --check`: exit 0.
 
+## Run Record
+
+- Allowed tools: local source inspection and changes, the repository's Python
+  quality tools, and SQLite.
+- Time limit: not retained.
+- Model and exact host version: not retained.
+- Human interventions: external subject and bounded task selection; a complete
+  intervention transcript is unavailable.
+- Defects introduced: none detected by the passing functional and quality
+  gates; Pyright was baseline-equivalent and remained non-pass.
+- Elapsed time and tokens: unavailable.
+
 ## Limitations
 
 - This run used the public historical release `4.1.1`; current `main` already
@@ -80,3 +93,4 @@ prevents a complete all-gates `PASS`.
   run validates the ProofGate evidence workflow on one external subject.
 - Pyright could not provide a clean quality gate because the pinned release
   already fails it in a clean workspace.
+- Missing session metadata prevents a `complete` record classification.

@@ -5,6 +5,11 @@
 Intensity: `lite`
 Profile: `standard`
 Operation: `plan`
+Record status: `legacy summary`
+
+This host-integration run predates the current recording contract. Its exact
+host version, command, and session record are unavailable, so it is retained as
+historical evidence only.
 
 ## Finding
 

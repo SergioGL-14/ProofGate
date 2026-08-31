@@ -5,6 +5,11 @@
 Intensity: `lite`
 Profile: `standard`
 Operation: `verify`
+Record status: `legacy summary`
+
+This validation predates the current recording contract. The exact subject,
+revision, commands, exit codes, and host version are unavailable, so it is not
+presented as independently reproducible evidence.
 
 ## Scope
 

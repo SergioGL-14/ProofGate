@@ -38,7 +38,12 @@ class ProofGatePackageTests(unittest.TestCase):
             ROOT / "templates" / "contract.md",
             ROOT / "templates" / "report.md",
             ROOT / "CONTRIBUTING.md",
+            ROOT / "CODE_OF_CONDUCT.md",
             ROOT / "SECURITY.md",
+            ROOT / ".github" / "ISSUE_TEMPLATE" / "bug_report.yml",
+            ROOT / ".github" / "ISSUE_TEMPLATE" / "config.yml",
+            ROOT / ".github" / "pull_request_template.md",
+            ROOT / ".github" / "workflows" / "checks.yml",
             ROOT / "docs" / "architecture.md",
             ROOT / "docs" / "evaluation.md",
             ROOT / "docs" / "usage.md",
@@ -102,6 +107,121 @@ class ProofGatePackageTests(unittest.TestCase):
         self.assertNotIn("The next pilot will use", readme)
         self.assertTrue(report.is_file())
         self.assertFalse(obsolete_plan.exists())
+        report_text = report.read_text(encoding="utf-8")
+        self.assertIn("`PROOFGATE: PASS`", report_text)
+        self.assertIn("Operation: `audit`", report_text)
+        self.assertIn("## Change\n\n- None.", report_text)
+        self.assertNotIn("`PROOFGATE BLOCKED`", report_text)
+
+    def test_run_reports_declare_honest_record_status(self) -> None:
+        reports = sorted((ROOT / "evals" / "runs").glob("PG-R*-report.md"))
+        expected = {
+            "PG-R01-pinned-selection-report.md": "legacy summary",
+            "PG-R02-state-transition-report.md": "legacy summary",
+            "PG-R03-destructive-path-report.md": "legacy summary",
+            "PG-R04-falsy-queue-report.md": "bounded",
+            "PG-R05-multi-repository-report.md": "legacy summary",
+            "PG-R06-command-validation-report.md": "legacy summary",
+            "PG-R07-skill-registration-report.md": "legacy summary",
+            "PG-R08-command-package-report.md": "legacy summary",
+            "PG-R09-evaluation-runner-report.md": "complete",
+            "PG-R10-sqlite-utils-dependent-views-report.md": "bounded",
+            "PG-R11-gitleaks-unreadable-files-report.md": "bounded",
+            "PG-R12-bat-cli-io-pilot-report.md": "bounded",
+        }
+
+        self.assertEqual(set(expected), {report.name for report in reports})
+        for report in reports:
+            text = report.read_text(encoding="utf-8")
+            marker = f"Record status: `{expected[report.name]}`"
+            self.assertEqual(1, text.count(marker), report.name)
+            self.assertRegex(text, r"`PROOFGATE: (?:PASS|FAIL|BLOCKED|EXCEPTION)`")
+
+        evaluations = (ROOT / "evals" / "README.md").read_text(encoding="utf-8")
+        self.assertIn("is retained as project history", evaluations)
+        self.assertIn("Missing historical data is labelled, never reconstructed", evaluations)
+
+        complete = (ROOT / "evals" / "runs" / "PG-R09-evaluation-runner-report.md").read_text(
+            encoding="utf-8"
+        )
+        for heading in (
+            "## Subject",
+            "## Exact Task And Limits",
+            "## Contract",
+            "## Evidence",
+            "## Final Diff",
+            "## Run Record",
+            "## Limitations",
+        ):
+            self.assertIn(heading, complete)
+
+    def test_current_public_reports_preserve_references_and_limits(self) -> None:
+        r04 = (ROOT / "evals" / "runs" / "PG-R04-falsy-queue-report.md").read_text(
+            encoding="utf-8"
+        )
+        r10 = (ROOT / "evals" / "runs" / "PG-R10-sqlite-utils-dependent-views-report.md").read_text(
+            encoding="utf-8"
+        )
+        r11 = (ROOT / "evals" / "runs" / "PG-R11-gitleaks-unreadable-files-report.md").read_text(
+            encoding="utf-8"
+        )
+        r12 = (ROOT / "evals" / "runs" / "PG-R12-bat-cli-io-pilot-report.md").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn("https://github.com/scrapy/queuelib/issues/88", r04)
+        self.assertIn("https://github.com/scrapy/queuelib/pull/89", r04)
+        self.assertIn("Revision: `eaf554a`", r04)
+        self.assertIn("https://github.com/simonw/sqlite-utils/issues/831", r10)
+        self.assertIn("https://github.com/gitleaks/gitleaks/issues/2232", r11)
+        self.assertIn("https://github.com/gitleaks/gitleaks/pull/2235", r11)
+        self.assertIn("## Exact Task And Limits", r12)
+        self.assertIn("## Contract", r12)
+        self.assertIn("## Run Record", r12)
+        for text in (r04, r10, r11, r12):
+            self.assertIn("## Limitations", text)
+
+    def test_stable_scope_and_cross_platform_ci_are_explicit(self) -> None:
+        readme = (ROOT / "README.md").read_text(encoding="utf-8")
+        roadmap = (ROOT / "ROADMAP.md").read_text(encoding="utf-8")
+        changelog = (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
+        contributing = (ROOT / "CONTRIBUTING.md").read_text(encoding="utf-8")
+        workflow = (ROOT / ".github" / "workflows" / "checks.yml").read_text(
+            encoding="utf-8"
+        )
+        usage = (ROOT / "docs" / "usage.md").read_text(encoding="utf-8")
+
+        self.assertIn("## Project status", readme)
+        self.assertIn("stable, maintenance-oriented instruction package", readme)
+        self.assertIn("## Stability closure", roadmap)
+        self.assertIn("No public `v1.0.5` or `v1.0.6` tag was created", changelog)
+        self.assertIn("Create annotated tags for future releases", contributing)
+        self.assertIn("ubuntu-latest", workflow)
+        self.assertIn("windows-latest", workflow)
+        self.assertIn('python: ["3.11", "3.12"]', workflow)
+        self.assertIn("branches: [main]", workflow)
+        self.assertNotIn("branches: [master", workflow)
+        self.assertIn("platform-tests", workflow)
+        self.assertRegex(workflow, r"(?m)^  contract-tests:$")
+        self.assertIn("needs: platform-tests", workflow)
+        self.assertIn("if: ${{ always() }}", workflow)
+        self.assertIn("### Codex and other hosts", usage)
+        self.assertIn("instruction-level portability", usage)
+
+    def test_local_markdown_links_resolve(self) -> None:
+        missing = []
+        for markdown in ROOT.rglob("*.md"):
+            if ".git" in markdown.parts:
+                continue
+            text = markdown.read_text(encoding="utf-8")
+            for target in re.findall(r"\[[^\]]+\]\(([^)]+)\)", text):
+                target = target.strip("<>")
+                if target.startswith(("http://", "https://", "mailto:", "#")):
+                    continue
+                path_text = target.split("#", 1)[0]
+                if path_text and not (markdown.parent / path_text).exists():
+                    missing.append(f"{markdown.relative_to(ROOT)} -> {target}")
+        self.assertEqual([], missing)
 
     def test_public_markdown_excludes_local_and_work_log_details(self) -> None:
         forbidden = (
@@ -269,6 +389,8 @@ class ProofGatePackageTests(unittest.TestCase):
         self.assertIn("intensity: <lite|full|ultra>", contract)
         self.assertIn("profile: <standard|infra>", contract)
         self.assertNotIn("mode: <value>", contract)
+        self.assertIn("may return `PASS` with `Change: none`", compact_skill)
+        self.assertIn("must not invent a build task", compact_skill)
 
     def test_evaluation_scenarios_are_scoreable_and_critical(self) -> None:
         scenarios = (ROOT / "evals" / "scenarios.md").read_text(encoding="utf-8")

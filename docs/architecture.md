@@ -92,3 +92,8 @@ Those capabilities may become useful for unattended execution, but adding them
 now would create additional maintenance without a demonstrated need. The
 evaluation runner remains limited to evaluator-side mechanics until real pilots
 justify more automation.
+
+This bounded surface is the stable architecture. Feature completeness does not
+mean that every host has a dedicated adapter or that every operating system is
+supported; it means the documented components have explicit contracts, tests,
+and limits, and speculative components are not required for release.

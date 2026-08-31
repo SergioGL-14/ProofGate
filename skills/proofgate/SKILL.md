@@ -2,7 +2,7 @@
 name: "proofgate"
 description: "Use when software work must be demonstrated with executed evidence, including requests for ProofGate, tests-first implementation, acceptance contracts, adversarial verification, root-cause fixes, auditable QA, or PASS/FAIL/BLOCKED verdicts. Applies to coding, bug fixes, refactoring, reviews, migrations, security, and infrastructure changes."
 license: "MIT"
-compatibility: "Portable instructions; initial support targets OpenCode and Codex."
+compatibility: "Portable instructions; validated with OpenCode and usable by hosts such as Codex that can load Markdown skills or session instructions."
 ---
 
 # ProofGate
@@ -164,6 +164,9 @@ Follow every stage in order. In `plan`, stop after TEST DESIGN and emit a
 `PROOFGATE PLAN (NO VERDICT)` artifact; a plan cannot emit `PASS`, `FAIL`,
 `BLOCKED`, or `EXCEPTION`. In `verify`, skip BUILD. In `audit`, inspect through
 ADVERSARY without editing and then issue a verdict about the audited contract.
+An audit that proves the selected behavior already satisfies every required ID
+may return `PASS` with `Change: none`; absence of a defect is not itself
+`BLOCKED`, and the agent must not invent a build task.
 
 ### 1. SCAN
 
