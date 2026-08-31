@@ -5,6 +5,11 @@
 Intensity: `ultra`
 Profile: `standard`
 Operation: `audit`
+Record status: `legacy summary`
+
+This intentionally records an evidence-contract failure. The missing revision,
+commands, exits, and inventory are the finding itself; the run cannot support a
+reproducibility claim.
 
 ## Findings
 

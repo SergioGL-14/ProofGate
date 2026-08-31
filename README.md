@@ -16,12 +16,21 @@ judgment with a checklist. The objective is to surround generated changes with
 enough executable evidence and restrictions that unsupported confidence cannot
 be mistaken for approval.
 
+## Project status
+
+ProofGate is a stable, maintenance-oriented instruction package. Its supported
+surface is the portable skill contract, the four operations, the templates, the
+public evaluation fixtures, and the bounded evaluator runner. New runtime,
+policy, or host-integration features require evidence from a real workflow; they
+are not prerequisites for stability.
+
 ## Current platform
 
-ProofGate is designed for Windows and Linux. Development and the repository's
-primary contract checks run on Windows, while Linux workflows have also been
-validated in an isolated Docker environment. macOS is not part of the current
-scope: its native behavior has not been implemented or validated here.
+ProofGate is designed for Windows and Linux. GitHub Actions is configured to
+run the repository contract suite on both platforms. Development primarily
+takes place on Windows, while Linux subject workflows have also been validated
+in isolated Docker environments. macOS is not part of the current scope: its
+native behavior has not been implemented or validated here.
 
 When a test depends on permissions or behavior specific to another operating
 system, ProofGate records that evidence as unavailable (`BLOCKED`) rather than
@@ -52,7 +61,11 @@ material risk, not added as decoration.
   ProofGate and 10/10 with it, reducing critical false success claims from one
   to zero. See [the effectiveness report](evals/effectiveness-report.md).
 - The first real-repository application found a falsy-item handling defect in
-  `scrapy/queuelib`, providing a concrete cross-project validation case.
+  `scrapy/queuelib`. The public report led to
+  [issue #88](https://github.com/scrapy/queuelib/issues/88), and the correction
+  was merged upstream in
+  [PR #89](https://github.com/scrapy/queuelib/pull/89). See the
+  [PG-R04 evidence](evals/runs/PG-R04-falsy-queue-report.md).
 - PG-R09 validated the evaluator runner against a small JavaScript subject with
   a prepared defect, demonstrating visible-green/reference-red rejection and a
   regression-first final `PASS`.
@@ -69,9 +82,10 @@ medium-sized Rust command-line project with real CLI, filesystem, and
 user-output boundaries. Its formatting, build, lint, test, and adversarial
 CLI checks passed in an isolated Linux environment.
 
-The pilot did not find a new bounded defect that justified changing the
-external project. ProofGate therefore recorded `BLOCKED` instead of inventing
-a contribution task. See the executed evidence and limitations in the
+The audit found the tested behavior correct and did not identify a bounded
+defect that justified changing the external project. It therefore recorded a
+no-change `PASS` for the audit contract instead of inventing a contribution
+task. See the executed evidence and limitations in the
 [`PG-R12` report](evals/runs/PG-R12-bat-cli-io-pilot-report.md).
 
 ## Operations
@@ -110,7 +124,9 @@ skill mechanism and use the same operations in natural language.
 
 ## Verification
 
-The repository uses Python's standard library for its contract tests:
+The portable skill has no runtime dependency. The evaluator runner and
+repository contract tests require Python 3.11 or newer and use only its
+standard library. CI covers Python 3.11 and 3.12 on Windows and Linux:
 
 ```bash
 python -m unittest discover -s tests -v
@@ -145,6 +161,7 @@ for the final non-pass verdict.
 - [Usage](docs/usage.md)
 - [Evaluation model](docs/evaluation.md)
 - [Contributing](CONTRIBUTING.md)
+- [Code of Conduct](CODE_OF_CONDUCT.md)
 - [Security](SECURITY.md)
 
 ## License

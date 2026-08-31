@@ -5,18 +5,20 @@
 Intensity: `ultra`
 Profile: `standard`
 Operation: `build`
+Record status: `bounded`
 
 ## Subject
 
 - Repository: [gitleaks/gitleaks](https://github.com/gitleaks/gitleaks)
 - Base revision: `b58d3f102cf3a2c84cb7f923d05c25c9b1aed84b`
-- Candidate revision: `d86cc86`
+- Candidate revision: `d86cc860f3c5f7085d8d68c24bc09424a73aabf7`
+  from [PR #2235](https://github.com/gitleaks/gitleaks/pull/2235)
 - Language and gates: Go, `go test`, `go vet`, `go build`, and `gofmt`
 - Local copies only; the subject checkout was not modified.
 
 ## Task
 
-Validate the reported Gitleaks behavior:
+Validate [issue #2232](https://github.com/gitleaks/gitleaks/issues/2232):
 an unreadable file can be skipped while the scan reports `no leaks found` and
 exits successfully. The required behavior is that incomplete scanning is
 observable as a partial scan and cannot become a false `PASS`.
@@ -85,6 +87,20 @@ permissions or an independently portable permission-failure fixture.
 - `go test -race` was not run because the host lacks a C compiler for cgo.
 - The candidate PR was evaluated as an external reference; the ProofGate
   repository itself was not modified beyond this report and its index entry.
+- The model identifier, exact host version, time limit, elapsed time, token
+  count, and complete intervention transcript were not retained. These session
+  metadata gaps prevent a `complete` record classification.
+
+## Run Record
+
+- Allowed tools: local Go source inspection and the recorded Go gates.
+- Host: Windows; exact host version unavailable.
+- Human interventions: external issue and candidate selection; complete
+  transcript unavailable.
+- Defects introduced: the candidate had a concrete formatting defect; no
+  further defect was inferred from the blocked permission path.
+- False `PASS`: none.
+- Unstable tests: none observed.
 
 ## Closure status
 

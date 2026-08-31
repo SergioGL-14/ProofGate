@@ -2,12 +2,18 @@ name: Checks
 
 on:
   push:
-    branches: [master, main]
+    branches: [main]
   pull_request:
 
 jobs:
-  contract-tests:
-    runs-on: ubuntu-latest
+  platform-tests:
+    name: platform-tests (${{ matrix.os }}, Python ${{ matrix.python }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ["3.11", "3.12"]
     permissions:
       contents: read
     steps:
@@ -16,7 +22,22 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v7
         with:
-          python-version: "3.12"
+          python-version: ${{ matrix.python }}
 
       - name: Run repository contract tests
         run: python -m unittest discover -s tests -v
+
+  contract-tests:
+    name: contract-tests
+    runs-on: ubuntu-latest
+    needs: platform-tests
+    if: ${{ always() }}
+    permissions:
+      contents: read
+    steps:
+      - name: Confirm required platform checks
+        if: ${{ needs.platform-tests.result == 'success' }}
+        run: echo "Windows and Linux contract tests passed."
+      - name: Reject failed or cancelled platform checks
+        if: ${{ needs.platform-tests.result != 'success' }}
+        run: exit 1

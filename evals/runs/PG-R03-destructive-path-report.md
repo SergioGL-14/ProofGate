@@ -5,6 +5,11 @@
 Intensity: `ultra`
 Profile: `infra`
 Operation: `audit`
+Record status: `legacy summary`
+
+This run predates the current recording contract. Its missing subject,
+revision, commands, and session metadata were not retained and are not
+reconstructed. It is project history, not reproducible effectiveness evidence.
 
 ## Finding
 

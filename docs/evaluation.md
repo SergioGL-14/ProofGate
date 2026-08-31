@@ -43,7 +43,9 @@ successful result.
 
 ## Running The Repository Checks
 
-Run the package contract tests from the repository root:
+The evaluator and repository checks require Python 3.11 or newer because the
+runner uses the standard-library `tomllib` module. Run the package contract
+tests from the repository root:
 
 ```bash
 python -m unittest discover -s tests -v
@@ -94,7 +96,8 @@ Platform script launchers such as Windows `.cmd` files may still involve the
 platform command processor. Completion expressions are evaluator-owned
 regular expressions over `stdout`, `stderr`, or their combined output. Each
 expression must capture non-empty completion text in a named `evidence` group;
-exit code 0 alone is insufficient. Built-in `unittest` gates also require a
+an expression that matches empty output is rejected, and exit code 0 alone is
+insufficient. Built-in `unittest` gates also require a
 random evaluator wrapper attestation emitted only after a non-empty suite
 returns successfully.
 
@@ -122,6 +125,9 @@ complete.
 External validation must record the repository revision, exact task, allowed
 tools, commands and exit codes, final diff, verdict, interventions, and known
 limitations. A missing mandatory record is `BLOCKED`, not an inferred pass.
+Historical reports that predate this rule are labelled `legacy summary` or
+`bounded`; they are retained for provenance but do not become reproducible
+evidence merely because the repository test suite indexes them.
 
 PG-R11 demonstrates why the distinction matters in practice. Against Gitleaks,
 the candidate's normal tests and build passed, while `gofmt` failed and the
@@ -165,3 +171,9 @@ An unavailable host capability may be a terminal limitation for the local
 evaluation. Close the run with an explicit bounded verdict and record what
 future capability would be needed; do not keep the roadmap blocked behind an
 operating system the project cannot access.
+
+An audit that proves the selected behavior already satisfies its contract may
+return `PASS` with `Change: none`. The absence of a defect is not itself
+`BLOCKED`; it means no build task should be invented. `BLOCKED` remains reserved
+for missing access, authorization, information, tooling, or environment that
+prevents the selected operation from being proven safely.

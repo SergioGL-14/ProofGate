@@ -1,0 +1,36 @@
+name: Bug report
+description: Report a reproducible defect in ProofGate's contract, runner, fixtures, or documentation
+title: "bug: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Do not include secrets or private repository details. Use private vulnerability reporting for security issues.
+  - type: textarea
+    id: observed
+    attributes:
+      label: Observed behavior
+      description: What happened, and which ProofGate operation or component was involved?
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: State the observable contract you expected.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal reproduction and evidence
+      description: Include the revision, exact commands, exit codes, and a minimal safe reproduction, or explain why one is unavailable.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment and limitations
+      description: Include the host, operating system, runtime versions, and any unavailable gate.
+    validations:
+      required: true

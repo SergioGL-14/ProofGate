@@ -2,6 +2,57 @@
 
 ## Unreleased
 
+### Changed
+
+- Declared the documented package feature-complete for stable maintenance
+  while keeping speculative runner, policy, and adapter work deferred.
+- Reclassified PG-R12 as a no-change audit `PASS`; finding no defect does not
+  satisfy the skill's definition of `BLOCKED`.
+- Restored public issue, pull-request, revision, command, and diff evidence for
+  PG-R04 and public references for PG-R10 and PG-R11.
+- Classified historical run reports as complete, bounded, or legacy so
+  summaries with missing session data cannot be mistaken for reproducible
+  evidence.
+- Clarified OpenCode command support and instruction-level use from Codex and
+  other hosts without claiming a universal host adapter.
+- Documented Python 3.11 as the evaluator minimum and configured CI for Python
+  3.11 and 3.12 on Windows and Linux.
+- Documented an annotated-tag policy for future releases without rewriting the
+  existing lightweight `v1.0.9` tag.
+
+### Added
+
+- Windows and Linux CI coverage for the repository contract suite.
+- Structured issue and pull-request templates plus a code of conduct.
+- Contract tests for report classification, current-report structure, public
+  evidence links, stable status, and the cross-platform workflow.
+
+### Fixed
+
+- Corrected the broken PG-R10 issue reference and restored the public Gitleaks
+  issue and candidate pull-request references in PG-R11.
+- Normalized the PG-R12 report header, operation, contract, run record, and
+  verdict semantics.
+
+### Version history note
+
+No public `v1.0.5` or `v1.0.6` tag was created; versioning advanced directly
+from `v1.0.4` to `v1.0.7`. Those historical identifiers remain unused, and no
+published tag is rewritten to fill the gap.
+
+### Validation
+
+- `python -m unittest discover -s tests -v`: 41 tests passed on Windows with
+  Python 3.14.3.
+- The public runner produced the expected exit codes for a visible-green
+  baseline/reference failure (`FAIL`, 1), a proven submission (`PASS`, 0), and
+  missing manual ambiguity evidence (`BLOCKED`, 2).
+- All four repository YAML files parsed successfully and `git diff --check`
+  passed.
+- The new Python 3.11/3.12 Windows/Linux Actions matrix still requires its
+  first run on the published commit; it is not claimed as executed evidence in
+  this unreleased tree.
+
 ## 1.0.9 - 2026-08-30
 
 ### Added

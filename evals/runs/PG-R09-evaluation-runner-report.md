@@ -5,6 +5,7 @@
 Intensity: `full`
 Profile: `standard`
 Operation: `build`
+Record status: `complete`
 
 ## Subject
 

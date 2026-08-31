@@ -18,6 +18,21 @@ same repository state, task, permissions, and available host conditions.
 - human interventions;
 - elapsed time and tokens when the host exposes them.
 
+Every run report declares one record status:
+
+- `complete`: all required fields are present, with unavailable host-provided
+  measurements stated explicitly;
+- `bounded`: the technical evidence is useful and its limits are explicit, but
+  one or more historical session fields were not retained;
+- `legacy summary`: the report predates the current recording contract and is
+  not independently reproducible.
+
+Only `complete` records and the preserved Phase 2 submissions support
+reproducibility claims. A `bounded` record may support the exact technical
+claim demonstrated by its commands and public references. A `legacy summary`
+is retained as project history and must not be used as effectiveness evidence.
+Missing historical data is labelled, never reconstructed from memory.
+
 Restore the fixture before each run. Do not reuse a conversation between base
 and ProofGate runs.
 
@@ -86,15 +101,15 @@ reproducible run evidence.
 
 | Run | Scope | Verdict |
 |---|---|---|
-| [PG-R01](runs/PG-R01-pinned-selection-report.md) | Pinned selection regression | `FAIL`: trial contract violation recorded |
-| [PG-R02](runs/PG-R02-state-transition-report.md) | State transition regression | `PASS` |
-| [PG-R03](runs/PG-R03-destructive-path-report.md) | Destructive path audit | `FAIL`: unsafe behavior found |
-| [PG-R04](runs/PG-R04-falsy-queue-report.md) | Falsy queue item regression | `PASS` |
-| [PG-R05](runs/PG-R05-multi-repository-report.md) | Multi-repository pilot | `PASS` |
-| [PG-R06](runs/PG-R06-command-validation-report.md) | Initial command validation | `FAIL` |
-| [PG-R07](runs/PG-R07-skill-registration-report.md) | Skill registration validation | `FAIL` |
-| [PG-R08](runs/PG-R08-command-package-report.md) | Command package validation | `PASS` |
-| [PG-R09](runs/PG-R09-evaluation-runner-report.md) | Language-independent evaluation runner pilot | `PASS` |
-| [PG-R10](runs/PG-R10-sqlite-utils-dependent-views-report.md) | sqlite-utils dependent views pilot | `BLOCKED`: pre-existing Pyright baseline |
-| [PG-R11](runs/PG-R11-gitleaks-unreadable-files-report.md) | Gitleaks unreadable-file partial-scan pilot | `FAIL`: candidate formatting gate; permission E2E is also blocked on Windows |
-| [PG-R12](runs/PG-R12-bat-cli-io-pilot-report.md) | bat CLI/IO boundary pilot | `BLOCKED`: baseline and boundary checks passed; no new bounded defect found |
+| [PG-R01](runs/PG-R01-pinned-selection-report.md) | Pinned selection regression | `FAIL`; legacy summary |
+| [PG-R02](runs/PG-R02-state-transition-report.md) | State transition regression | `PASS`; legacy summary |
+| [PG-R03](runs/PG-R03-destructive-path-report.md) | Destructive path audit | `FAIL`; legacy summary |
+| [PG-R04](runs/PG-R04-falsy-queue-report.md) | Falsy queue item regression | `PASS`; bounded public record |
+| [PG-R05](runs/PG-R05-multi-repository-report.md) | Multi-repository pilot | `PASS`; legacy summary |
+| [PG-R06](runs/PG-R06-command-validation-report.md) | Initial command validation | `FAIL`; legacy summary |
+| [PG-R07](runs/PG-R07-skill-registration-report.md) | Skill registration validation | `FAIL`; legacy summary |
+| [PG-R08](runs/PG-R08-command-package-report.md) | Command package validation | `PASS`; legacy summary |
+| [PG-R09](runs/PG-R09-evaluation-runner-report.md) | Language-independent evaluation runner pilot | `PASS`; complete record |
+| [PG-R10](runs/PG-R10-sqlite-utils-dependent-views-report.md) | sqlite-utils dependent views pilot | `BLOCKED`; bounded record with pre-existing Pyright baseline |
+| [PG-R11](runs/PG-R11-gitleaks-unreadable-files-report.md) | Gitleaks unreadable-file partial-scan pilot | `FAIL`; bounded record, permission E2E also blocked on Windows |
+| [PG-R12](runs/PG-R12-bat-cli-io-pilot-report.md) | bat CLI/IO boundary audit | no-change `PASS`; bounded record |

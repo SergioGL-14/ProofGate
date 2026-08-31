@@ -4,7 +4,13 @@ This roadmap protects ProofGate's purpose: reduce exhaustive manual review of
 agent-generated code by surrounding the work with restrictions, executable
 evidence, quality gates, and adversarial checks. It is not a release plan.
 
-## Current Direction
+## Stable Maintenance Direction
+
+The current package is feature-complete for its documented scope. Stability
+means preserving the portable contract, operation boundaries, deterministic
+fixtures, evaluator verdict semantics, and Windows/Linux checks. There is no
+mandatory runtime, policy format, host adapter, or additional pilot blocking a
+stable maintenance release.
 
 Continue validating ProofGate against medium-sized real repositories. A subject may
 use any language, framework, or host. It is a test environment for the skill,
@@ -64,9 +70,25 @@ The `bat` CLI/IO boundary pilot is recorded in
 [`PG-R12`](evals/runs/PG-R12-bat-cli-io-pilot-report.md). Its Docker/Linux
 baseline and real CLI checks passed at the pinned revision, while no new
 bounded defect survived checks against the implementation, tests, and
-upstream history. The verdict is `BLOCKED` because there is no defensible
-contribution task, not because the subject failed. Native macOS behavior still
-requires a macOS runner or Mac; Docker on Windows does not provide that.
+upstream history. The audit verdict is a no-change `PASS`: its contract was to
+assess the boundary, not to manufacture an implementation task. Native macOS
+behavior remains outside the contract and requires a macOS runner or Mac;
+Docker on Windows does not provide that.
+
+## Stability closure
+
+The project may enter maintenance mode when:
+
+- the repository contract suite passes on Windows and Linux;
+- public claims link to complete or explicitly bounded evidence;
+- legacy summaries are not presented as reproducible evaluations;
+- the current release has no known contract, runner, documentation, or
+  packaging defect inside the supported scope;
+- every remaining roadmap item is explicitly deferred or not planned.
+
+Future work should respond to a demonstrated failure, portability gap, or
+maintenance need. Additional pilots are welcome evidence, but are no longer a
+condition for calling the documented package stable.
 
 ## Deferred
 
