@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 1.0.10 - 2026-08-31
+
 ### Changed
 
 - Declared the documented package feature-complete for stable maintenance
@@ -49,9 +51,8 @@ published tag is rewritten to fill the gap.
   missing manual ambiguity evidence (`BLOCKED`, 2).
 - All four repository YAML files parsed successfully and `git diff --check`
   passed.
-- The new Python 3.11/3.12 Windows/Linux Actions matrix still requires its
-  first run on the published commit; it is not claimed as executed evidence in
-  this unreleased tree.
+- The Python 3.11/3.12 Windows/Linux Actions matrix passed on the release pull
+  request, including the protected aggregate contract gate.
 
 ## 1.0.9 - 2026-08-30
 
